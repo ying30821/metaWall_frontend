@@ -1,7 +1,7 @@
 <template>
   <div class="w-screen h-screen flex items-center justify-center">
     <div
-      class="border-2 border-[#000400] p-12 py-16 flex gap-x-8 shadow-[-6px_6px_0_-0_#00040029] bg-secondary"
+      class="border-2 border-dark p-12 py-16 flex gap-x-8 shadow-[-6px_6px_0_-0_#00040029] bg-[#EFECE7]"
     >
       <div class="bg-login w-80 h-80 bg-center bg-contain bg-no-repeat" />
       <div>

@@ -5,7 +5,8 @@ export default {
     extend: {
       colors: {
         primary: '#03438D',
-        secondary: '#EFECE7',
+        secondary: '#EEC32A',
+        dark: '#000400',
       },
       backgroundImage: {
         login: "url('./src/assets/images/img.svg')",
