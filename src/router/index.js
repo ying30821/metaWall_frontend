@@ -6,6 +6,11 @@ const routes = [
     name: 'Home',
     component: () => import('../views/Home.vue'),
   },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue'),
+  },
 ];
 
 const router = createRouter({
@@ -13,11 +18,6 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
-  // const isAuthenticated = true;
-  // if (to.name !== 'Login' && !isAuthenticated) {
-  //   return { name: 'Login' };
-  // }
-});
+router.beforeEach((to) => {});
 
 export default router;
