@@ -7,7 +7,7 @@
           class="rounded-full w-[30px] h-[30px] border-2 border-dark overflow-hidden"
         >
           <img
-            :src="userData.img"
+            :src="userData.photo"
             alt="user_avatar"
             class="object-cover aspect-square"
           />
@@ -21,6 +21,6 @@
 <script setup>
 const userData = {
   name: '邊緣小杰',
-  img: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',
+  photo: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',
 };
 </script>

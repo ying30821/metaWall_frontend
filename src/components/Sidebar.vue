@@ -14,7 +14,7 @@
           class="border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:border-primary"
         >
           <img
-            :src="userData.img"
+            :src="userData.photo"
             alt="user_avatar"
             class="object-cover aspect-square"
           />
@@ -52,6 +52,6 @@
 <script setup>
 const userData = {
   name: '邊緣小杰',
-  img: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',
+  photo: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',
 };
 </script>
