@@ -7,6 +7,7 @@ export default {
         primary: '#03438D',
         secondary: '#EEC32A',
         dark: '#000400',
+        light: '#efece7',
       },
       backgroundImage: {
         login: "url('./src/assets/images/img.svg')",

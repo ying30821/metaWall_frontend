@@ -171,7 +171,7 @@
         <div
           v-for="comment in post.comments"
           :key="comment.id"
-          class="p-4 rounded-xl bg-[#EFECE7]/30"
+          class="p-4 rounded-xl bg-light/30"
         >
           <div class="flex gap-x-4">
             <div
