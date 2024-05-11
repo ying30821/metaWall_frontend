@@ -5,7 +5,7 @@
     </div>
     <div v-else class="relative">
       <Navbar class="mb-12" />
-      <div class="container w-full mx-auto flex relative gap-x-7">
+      <div class="container w-full mx-auto flex relative gap-x-7 mb-8">
         <div class="flex-1">
           <router-view />
         </div>
