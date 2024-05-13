@@ -14,7 +14,7 @@
 
 @layer components {
   .btn-primary {
-    @apply text-white bg-primary p-4 justify-center border-dark border-2 rounded-lg inline-flex text-center hover:bg-secondary hover:text-black disabled:bg-[#A8B0B9] disabled:border-[#808080];
+    @apply text-white font-bold disabled:cursor-not-allowed bg-primary p-4 justify-center border-dark border-2 rounded-lg inline-flex text-center hover:bg-secondary hover:text-black disabled:bg-[#A8B0B9] disabled:border-[#808080];
   }
 }
 @layer utilities {

@@ -1,17 +1,18 @@
 <template>
   <div
-    class="px-6 py-8 border-2 border-dark sticky right-0 top-20 mr-4 w-[320px] space-y-6 bg-white h-fit z-10"
+    class="px-6 py-8 border-2 border-dark sticky right-0 top-20 w-[320px] space-y-6 bg-white h-fit z-10"
   >
     <button
+      @click="$router.push('/new-post')"
       type="button"
-      class="text-white bg-primary p-4 border-dark border-2 shadow-[-2px_2px_0px_#000400] rounded-lg block text-center w-full hover:bg-secondary hover:text-black disabled:bg-[#A8B0B9] disabled:border-[#808080]"
+      class="btn-primary shadow-[-2px_2px_0px_#000400] w-full"
     >
       張貼動態
     </button>
     <div class="space-y-[22px]">
       <router-link to="/" class="flex items-center gap-x-4 group">
         <div
-          class="border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:border-primary"
+          class="flex-shrink-0 border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:border-primary"
         >
           <img
             :src="userData.photo"
@@ -23,7 +24,7 @@
       </router-link>
       <router-link to="/" class="flex items-center gap-x-4 group">
         <div
-          class="border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:bg-primary"
+          class="flex-shrink-0 border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:bg-primary"
         >
           <span
             class="material-symbols-outlined text-3xl text-black group-hover:text-white"
@@ -35,7 +36,7 @@
       </router-link>
       <router-link to="/" class="flex items-center gap-x-4 group">
         <div
-          class="border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:bg-primary"
+          class="flex-shrink-0 border-2 border-dark bg-[#E2EDFA] rounded-full inline-flex items-center justify-center w-[50px] h-[50px] overflow-hidden group-hover:bg-primary"
         >
           <span
             class="material-symbols-outlined text-2xl text-black group-hover:text-white"
