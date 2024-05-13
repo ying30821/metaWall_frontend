@@ -1,7 +1,12 @@
 <template>
   <nav class="bg-white border-b-[3px] border-dark sticky top-0 left-0 z-20">
     <div class="container mx-auto py-3 flex justify-between items-center">
-      <h1 class="font-paytone-one text-2xl">MetaWall</h1>
+      <h1
+        @click="$router.push('/')"
+        class="font-paytone-one text-2xl cursor-pointer"
+      >
+        MetaWall
+      </h1>
       <Menu as="div" class="relative inline-block text-left">
         <MenuButton class="flex gap-x-2.5">
           <div

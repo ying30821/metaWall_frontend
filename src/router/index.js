@@ -4,6 +4,7 @@ const routes = [
   {
     path: '/',
     name: 'Feed',
+    alias: '/feed',
     component: () => import('../views/Feed.vue'),
   },
   {

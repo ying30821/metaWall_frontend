@@ -1,11 +1,14 @@
 <template>
+  <Loading :isLoading="isLoadingPage" />
   <div class="flex items-stretch mb-4 gap-x-3">
-    <Listbox as="div" v-model="selected">
+    <Listbox as="div" v-model="searchData.timeSort">
       <div class="relative">
         <ListboxButton
           class="relative w-full cursor-default bg-white h-full py-2.5 pl-4 min-w-40 pr-10 ring-2 ring-inset ring-dark focus:outline-none focus:ring-2 focus:ring-primary text-left"
         >
-          <span class="block truncate">{{ selected.value }}</span>
+          <span class="block truncate">
+            {{ searchData.timeSort.value }}
+          </span>
           <span
             class="material-symbols-outlined pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
           >
@@ -49,11 +52,13 @@
     </Listbox>
     <div class="flex w-full">
       <input
+        v-model.trim="searchData.q"
         type="text"
         class="block w-full flex-grow-1 py-1.5 px-4 border-2 border-r-0 border-black placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
         placeholder="搜尋貼文"
       />
       <button
+        @click="fetchPosts"
         type="button"
         class="btn-primary px-3 py-2 rounded-none flex-none"
       >
@@ -92,18 +97,19 @@
     >
       <div class="flex items-center gap-x-4">
         <div
-          class="flex-shrink-0 rounded-full w-11 h-11 border-2 border-dark overflow-hidden"
+          class="flex-shrink-0 rounded-full w-11 h-11 border-2 border-dark overflow-hidden bg-light"
         >
           <img
-            :src="post.user.photo"
+            v-if="post.user?.photo"
+            :src="post.user?.photo"
             alt="user_avatar"
             class="object-cover aspect-square"
           />
         </div>
         <div>
-          <h2 class="text-base font-bold">{{ post.user.name }}</h2>
+          <h2 class="text-base font-bold">{{ post.user?.name }}</h2>
           <p class="text-xs text-[#9B9893] mb-1">
-            {{ convertDate(post.createAt) }}
+            {{ convertDate(post.createdAt) }}
           </p>
         </div>
       </div>
@@ -126,10 +132,11 @@
       </div>
       <div class="flex items-center gap-x-2 w-full">
         <div
-          class="flex-shrink-0 rounded-full w-10 h-10 border-2 border-dark overflow-hidden"
+          class="flex-shrink-0 rounded-full w-10 h-10 border-2 border-dark overflow-hidden bg-light"
         >
           <img
-            :src="post.user.photo"
+            v-if="post.user?.photo"
+            :src="post.user?.photo"
             alt="user_avatar"
             class="object-cover aspect-square"
           />
@@ -167,7 +174,7 @@
           </button>
         </div>
       </div>
-      <div class="space-y-4">
+      <div v-if="post.comments" class="space-y-4">
         <div
           v-for="comment in post.comments"
           :key="comment.id"
@@ -188,7 +195,7 @@
                 {{ comment.user.name }}
               </h3>
               <p class="text-xs text-[#9B9893] mb-1">
-                {{ convertDate(comment.createAt) }}
+                {{ convertDate(comment.createdAt) }}
               </p>
               <p>{{ comment.content }}</p>
             </div>
@@ -200,7 +207,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch, onMounted } from 'vue';
 import {
   Listbox,
   ListboxButton,
@@ -208,14 +215,14 @@ import {
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/vue';
+import { getPosts } from '@/api';
+import Loading from '@/components/Loading.vue';
 
 const options = [
-  { key: 'asc', value: '最新貼文' },
-  { key: 'des', value: '最舊貼文' },
+  { key: 'desc', value: '最新貼文' },
+  { key: 'asc', value: '最舊貼文' },
 ];
-const selected = ref(options[0]);
-const isLoadingSubmit = ref(false);
-const posts = reactive([
+const tempPostData = [
   {
     user: {
       name: '邊緣小杰',
@@ -232,7 +239,7 @@ const posts = reactive([
           photo: 'https://fakeimg.pl/250x100/ff0000/',
         },
         content: '真的～我已經準備冬眠了',
-        createAt: '2024-05-08T14:45:59.587Z',
+        createdAt: '2024-05-08T14:45:59.587Z',
       },
       {
         id: 1,
@@ -241,12 +248,25 @@ const posts = reactive([
           photo: 'https://fakeimg.pl/250x100/ff0000/',
         },
         content: '真的～我已經準備冬眠了',
-        createAt: '2024-05-08T14:45:59.587Z',
+        createdAt: '2024-05-08T14:45:59.587Z',
       },
     ],
-    createAt: '2024-05-08T14:45:59.587Z',
+    createdAt: '2024-05-08T14:45:59.587Z',
   },
-]);
+];
+const isLoadingSubmit = ref(false);
+const isLoadingPage = ref(false);
+const searchData = reactive({
+  timeSort: options[0],
+  q: null,
+});
+const posts = reactive([]);
+
+watch(
+  () => searchData.timeSort,
+  () => fetchPosts()
+);
+onMounted(() => fetchPosts());
 
 const convertDate = (date) => {
   const newDate = new Date(date);
@@ -260,5 +280,16 @@ const convertDate = (date) => {
     year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
 
   return formatDate;
+};
+const fetchPosts = async () => {
+  isLoadingPage.value = true;
+  const params = {
+    timeSort: searchData.timeSort.key,
+    q: searchData.q,
+  };
+  const res = await getPosts(params);
+  posts.splice(0);
+  posts.push(...res.data);
+  isLoadingPage.value = false;
 };
 </script>
