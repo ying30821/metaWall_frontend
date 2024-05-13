@@ -9,4 +9,15 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    // specifies the target server to proxy requests (only for development)
+    ...(env.VITE_PROXY_TARGET_URL && {
+      proxy: {
+        '/api': {
+          target: env.VITE_PROXY_TARGET_URL,
+          changeOrigin: true,
+        },
+      },
+    }),
+  },
 });
