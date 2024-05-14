@@ -12,10 +12,12 @@
         <Sidebar />
       </div>
     </div>
+    <Notifications />
   </div>
 </template>
 
 <script setup>
 import Navbar from '@/components/Navbar.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import Notifications from '@/components/Notifications.vue';
 </script>
