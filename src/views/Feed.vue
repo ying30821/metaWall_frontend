@@ -149,6 +149,7 @@
             />
             <button
               type="button"
+              disabled
               class="btn-primary px-12 py-2 rounded-none flex-none items-center"
             >
               <div v-if="isLoadingSubmit">
