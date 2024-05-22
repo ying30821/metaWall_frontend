@@ -114,12 +114,17 @@
           </div>
         </div>
         <p>{{ post.content }}</p>
-        <img
+        <div
           v-if="post.image"
-          :src="post.image"
-          alt="post_image"
-          class="max-h-40 w-full rounded-lg border-2 border-dark object-cover"
-        />
+          class="h-60 w-full overflow-hidden rounded-lg border-2 border-dark bg-light/50"
+        >
+          <img
+            :src="post.image"
+            @error="handleErrorImg"
+            alt="post_image"
+            class="h-full w-full object-cover object-center"
+          />
+        </div>
         <div class="flex items-center gap-x-2">
           <span
             :class="post.likes > 0 ? 'text-primary' : 'text-[#9B9893]'"
@@ -218,43 +223,12 @@ import {
   ListboxOptions,
 } from '@headlessui/vue';
 import { getPosts } from '@/api';
+import defaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 
 const options = [
   { key: 'desc', value: '最新貼文' },
   { key: 'asc', value: '最舊貼文' },
-];
-const tempPostData = [
-  {
-    user: {
-      name: '邊緣小杰',
-      photo: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',
-    },
-    content: '外面看起來就超冷.... 我決定回被窩繼續睡....>.<',
-    image: 'https://fakeimg.pl/400x200/?retina=1&text=こんにちは&font=noto',
-    likes: 10,
-    comments: [
-      {
-        id: 1,
-        user: {
-          name: '西林',
-          photo: 'https://fakeimg.pl/250x100/ff0000/',
-        },
-        content: '真的～我已經準備冬眠了',
-        createdAt: '2024-05-08T14:45:59.587Z',
-      },
-      {
-        id: 1,
-        user: {
-          name: '西林',
-          photo: 'https://fakeimg.pl/250x100/ff0000/',
-        },
-        content: '真的～我已經準備冬眠了',
-        createdAt: '2024-05-08T14:45:59.587Z',
-      },
-    ],
-    createdAt: '2024-05-08T14:45:59.587Z',
-  },
 ];
 const isLoadingSubmit = ref(false);
 const isLoadingPage = ref(false);
@@ -268,6 +242,7 @@ watch(
   () => searchData.timeSort,
   () => fetchPosts(),
 );
+
 onMounted(() => fetchPosts());
 
 const convertDate = (date) => {
@@ -291,5 +266,8 @@ const fetchPosts = async () => {
   posts.splice(0);
   posts.push(...res.data);
   isLoadingPage.value = false;
+};
+const handleErrorImg = (e) => {
+  e.target.src = defaultImg;
 };
 </script>
