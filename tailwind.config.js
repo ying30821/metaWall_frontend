@@ -10,7 +10,7 @@ export default {
         light: '#efece7',
       },
       backgroundImage: {
-        login: "url('./src/assets/images/img.svg')",
+        login: "url('./src/assets/images/login.svg')",
       },
     },
     fontFamily: {
