@@ -11,15 +11,11 @@
     </button>
     <div class="space-y-[22px]">
       <router-link to="/" class="group flex items-center gap-x-4">
-        <div
-          class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] group-hover:border-primary"
-        >
-          <img
-            :src="userData.photo"
-            alt="user_avatar"
-            class="aspect-square object-cover"
-          />
-        </div>
+        <Avatar
+          :image="userData.photo"
+          :userName="userData.name"
+          class="h-[50px] w-[50px]"
+        />
         <p class="font-bold group-hover:text-primary">{{ userData.name }}</p>
       </router-link>
       <router-link to="/" class="group flex items-center gap-x-4">
@@ -51,6 +47,8 @@
 </template>
 
 <script setup>
+import Avatar from './Avatar.vue';
+
 const userData = {
   name: '邊緣小杰',
   photo: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',

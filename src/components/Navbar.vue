@@ -9,15 +9,11 @@
       </h1>
       <Menu as="div" class="relative inline-block text-left">
         <MenuButton class="flex gap-x-2.5">
-          <div
-            class="h-[30px] w-[30px] flex-shrink-0 overflow-hidden rounded-full border-2 border-dark"
-          >
-            <img
-              :src="userData.photo"
-              alt="user_avatar"
-              class="aspect-square object-cover"
-            />
-          </div>
+          <Avatar
+            :image="userData.photo"
+            :userName="userData.name"
+            class="h-[30px] w-[30px] text-sm"
+          />
           <p class="border-b-2 border-dark pb-1 font-bold">Member</p>
         </MenuButton>
         <transition
@@ -69,7 +65,7 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
-import { compileTemplate } from 'vue/compiler-sfc';
+import Avatar from './Avatar.vue';
 
 const userData = {
   name: '邊緣小杰',

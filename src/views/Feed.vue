@@ -96,16 +96,11 @@
         class="card-shadow space-y-4 overflow-hidden rounded-lg border-2 border-dark bg-white p-6 lg:px-10"
       >
         <div class="flex items-center gap-x-4">
-          <div
-            class="h-11 w-11 flex-shrink-0 overflow-hidden rounded-full border-2 border-dark bg-light"
-          >
-            <img
-              v-if="post.user?.photo"
-              :src="post.user?.photo"
-              alt="user_avatar"
-              class="aspect-square object-cover"
-            />
-          </div>
+          <Avatar
+            :image="post.user.photo"
+            :userName="post.user.name"
+            class="h-11 w-11"
+          />
           <div>
             <h2 class="text-base font-bold">{{ post.user?.name }}</h2>
             <p class="mb-1 text-xs text-[#9B9893]">
@@ -136,16 +131,7 @@
           <span v-else class="text-[#9B9893]">成為第一個按讚的朋友</span>
         </div>
         <div class="flex w-full items-center gap-x-2">
-          <div
-            class="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border-2 border-dark bg-light"
-          >
-            <img
-              v-if="post.user?.photo"
-              :src="post.user?.photo"
-              alt="user_avatar"
-              class="aspect-square object-cover"
-            />
-          </div>
+          <Avatar :image="post.user.photo" :userName="post.user.name" />
           <div class="flex w-full">
             <input
               type="text"
@@ -187,15 +173,10 @@
             class="rounded-xl bg-light/30 p-4"
           >
             <div class="flex gap-x-4">
-              <div
-                class="h-11 w-11 flex-shrink-0 overflow-hidden rounded-full border-2 border-dark"
-              >
-                <img
-                  :src="comment.user.photo"
-                  alt="user_avatar"
-                  class="aspect-square object-cover"
-                />
-              </div>
+              <Avatar
+                :image="comment.user.photo"
+                :userName="comment.user.name"
+              />
               <div>
                 <h3 class="text-base font-bold">
                   {{ comment.user.name }}
@@ -225,6 +206,7 @@ import {
 import { getPosts } from '@/api';
 import defaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
+import Avatar from '@/components/Avatar.vue';
 
 const options = [
   { key: 'desc', value: '最新貼文' },
