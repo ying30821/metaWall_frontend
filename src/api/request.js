@@ -12,7 +12,7 @@ instance.interceptors.request.use(
   },
   (err) => {
     return Promise.reject(err);
-  }
+  },
 );
 
 instance.interceptors.response.use(
@@ -21,6 +21,6 @@ instance.interceptors.response.use(
   },
   (error) => {
     return { error };
-  }
+  },
 );
 export default instance;

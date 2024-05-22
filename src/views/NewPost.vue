@@ -1,16 +1,16 @@
 <template>
   <section class="space-y-4">
     <h2
-      class="p-4 text-xl text-center relative border-2 before:top-2 before:-left-2 bg-white font-bold before:bg-white border-dark before:absolute before:w-full before:h-full before:-z-[1] before:border-2 before:border-dark"
+      class="relative border-2 border-dark bg-white p-4 text-center text-xl font-bold before:absolute before:-left-2 before:top-2 before:-z-[1] before:h-full before:w-full before:border-2 before:border-dark before:bg-white"
     >
       張貼動態
     </h2>
     <form
       @submit.prevent="handleSubmitPost"
-      class="rounded-lg bg-white p-8 border-2 border-dark space-y-4 card-shadow"
+      class="card-shadow space-y-4 rounded-lg border-2 border-dark bg-white p-8"
     >
       <div class="space-y-1">
-        <label for="content" class="block mb-1">貼文內容</label>
+        <label for="content" class="mb-1 block">貼文內容</label>
         <textarea
           v-model.trim="v$.content.$model"
           id="content"
@@ -18,31 +18,31 @@
           rows="5"
           cols="35"
           placeholder="輸入您的貼文內容"
-          class="border-2 border-dark w-full p-4 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
+          class="w-full border-2 border-dark p-4 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
         />
         <div
           class="input-errors"
           v-for="error of v$.content.$errors"
           :key="error.$uid"
         >
-          <div class="text-sm text-[#F57375] pl-1">{{ error.$message }}</div>
+          <div class="pl-1 text-sm text-[#F57375]">{{ error.$message }}</div>
         </div>
       </div>
       <div class="space-y-1">
         <input
           v-model.trim="v$.imgUrl.$model"
           type="text"
-          class="mb-4 block w-full py-1.5 px-4 border-2 border-black placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
+          class="mb-4 block w-full border-2 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
           placeholder="圖片網址"
         />
         <div
           v-if="formData.imgUrl"
-          class="border-2 border-dark rounded-lg overflow-hidden h-40 w-full"
+          class="h-40 w-full overflow-hidden rounded-lg border-2 border-dark"
         >
           <img
             :src="formData.imgUrl"
             alt="post_image"
-            class="object-cover w-full"
+            class="w-full object-cover"
           />
         </div>
         <div
@@ -50,12 +50,12 @@
           v-for="error of v$.imgUrl.$errors"
           :key="error.$uid"
         >
-          <div class="text-sm text-[#F57375] pl-1">{{ error.$message }}</div>
+          <div class="pl-1 text-sm text-[#F57375]">{{ error.$message }}</div>
         </div>
       </div>
       <button
         type="submit"
-        class="max-w-80 w-full font-bold p-4 mx-auto border-dark border-2 rounded-lg flex justify-center text-center bg-secondary text-black disabled:bg-[#A8B0B9] disabled:cursor-not-allowed disabled:border-[#808080] hover:bg-secondary/80"
+        class="mx-auto flex w-full max-w-80 justify-center rounded-lg border-2 border-dark bg-secondary p-4 text-center font-bold text-black hover:bg-secondary/80 disabled:cursor-not-allowed disabled:border-[#808080] disabled:bg-[#A8B0B9]"
       >
         送出貼文
       </button>
@@ -102,7 +102,7 @@ const handleSubmitPost = async () => {
         text: '新增貼文成功！',
         type: 'success',
       },
-      4000
+      4000,
     );
     formData.content = null;
     formData.imgUrl = null;
@@ -115,7 +115,7 @@ const handleSubmitPost = async () => {
         text: '新增貼文失敗！',
         type: 'error',
       },
-      4000
+      4000,
     );
   }
 };

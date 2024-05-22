@@ -14,10 +14,10 @@
 
 @layer components {
   .btn-primary {
-    @apply text-white text-sm font-bold disabled:cursor-not-allowed bg-primary px-3 py-2.5 lg:text-base lg:px-4 lg:py-3 justify-center border-dark border-2 rounded-lg inline-flex text-center hover:bg-secondary hover:text-black disabled:text-white disabled:bg-[#A8B0B9] disabled:border-[#808080];
+    @apply inline-flex justify-center rounded-lg border-2 border-dark bg-primary px-3 py-2.5 text-center text-sm font-bold text-white hover:bg-secondary hover:text-black disabled:cursor-not-allowed disabled:border-[#808080] disabled:bg-[#A8B0B9] disabled:text-white lg:px-4 lg:py-3 lg:text-base;
   }
   .form-input {
-    @apply block w-full border-0 px-4 text-sm  py-2 lg:px-5 lg:py-3 text-gray-900 ring-2 ring-inset ring-black placeholder:text-gray-400 lg:text-base focus:ring-2 focus:ring-inset focus:ring-primary;
+    @apply block w-full border-0 px-4 py-2  text-sm text-gray-900 ring-2 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary lg:px-5 lg:py-3 lg:text-base;
   }
 }
 @layer utilities {

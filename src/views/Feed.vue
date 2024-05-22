@@ -1,10 +1,10 @@
 <template>
   <Loading :isLoading="isLoadingPage" />
-  <div class="flex items-stretch mb-4 gap-x-3">
+  <div class="mb-4 flex items-stretch gap-x-3">
     <Listbox as="div" v-model="searchData.timeSort">
       <div class="relative">
         <ListboxButton
-          class="relative w-full cursor-default bg-white h-full py-2.5 pl-4 min-w-40 pr-10 ring-2 ring-inset ring-dark focus:outline-none focus:ring-2 focus:ring-primary text-left"
+          class="relative h-full w-full min-w-40 cursor-default bg-white py-2.5 pl-4 pr-10 text-left ring-2 ring-inset ring-dark focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <span class="block truncate">
             {{ searchData.timeSort.value }}
@@ -54,13 +54,13 @@
       <input
         v-model.trim="searchData.q"
         type="text"
-        class="block w-full flex-grow-1 py-1.5 px-4 border-2 border-r-0 border-black placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
+        class="flex-grow-1 block w-full border-2 border-r-0 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
         placeholder="搜尋貼文"
       />
       <button
         @click="fetchPosts"
         type="button"
-        class="btn-primary px-3 py-2 rounded-none flex-none"
+        class="btn-primary flex-none rounded-none px-3 py-2"
       >
         <span class="material-symbols-outlined">search</span>
       </button>
@@ -69,22 +69,22 @@
   <section>
     <div v-if="posts.length === 0">
       <div
-        class="bg-white card-shadow border-2 border-dark rounded-lg overflow-hidden"
+        class="card-shadow overflow-hidden rounded-lg border-2 border-dark bg-white"
       >
         <div class="border-b-2 border-dark p-4">
           <div class="flex gap-x-1.5">
             <div
-              class="rounded-full w-2 h-2 border border-[#707070] bg-[#DE4B63]"
+              class="h-2 w-2 rounded-full border border-[#707070] bg-[#DE4B63]"
             />
             <div
-              class="rounded-full w-2 h-2 border border-[#707070] bg-[#FAA722]"
+              class="h-2 w-2 rounded-full border border-[#707070] bg-[#FAA722]"
             />
             <div
-              class="rounded-full w-2 h-2 border border-[#707070] bg-[#83C51D]"
+              class="h-2 w-2 rounded-full border border-[#707070] bg-[#83C51D]"
             />
           </div>
         </div>
-        <p class="text-center text-[#9B9893] py-8">
+        <p class="py-8 text-center text-[#9B9893]">
           目前尚無動態，新增一則貼文吧！
         </p>
       </div>
@@ -93,22 +93,22 @@
       <div
         v-for="post in posts"
         :key="post"
-        class="bg-white card-shadow border-2 border-dark rounded-lg overflow-hidden p-6 space-y-4 lg:px-10"
+        class="card-shadow space-y-4 overflow-hidden rounded-lg border-2 border-dark bg-white p-6 lg:px-10"
       >
         <div class="flex items-center gap-x-4">
           <div
-            class="flex-shrink-0 rounded-full w-11 h-11 border-2 border-dark overflow-hidden bg-light"
+            class="h-11 w-11 flex-shrink-0 overflow-hidden rounded-full border-2 border-dark bg-light"
           >
             <img
               v-if="post.user?.photo"
               :src="post.user?.photo"
               alt="user_avatar"
-              class="object-cover aspect-square"
+              class="aspect-square object-cover"
             />
           </div>
           <div>
             <h2 class="text-base font-bold">{{ post.user?.name }}</h2>
-            <p class="text-xs text-[#9B9893] mb-1">
+            <p class="mb-1 text-xs text-[#9B9893]">
               {{ convertDate(post.createdAt) }}
             </p>
           </div>
@@ -118,7 +118,7 @@
           v-if="post.image"
           :src="post.image"
           alt="post_image"
-          class="border-2 border-dark rounded-lg object-cover max-h-40 w-full"
+          class="max-h-40 w-full rounded-lg border-2 border-dark object-cover"
         />
         <div class="flex items-center gap-x-2">
           <span
@@ -130,32 +130,32 @@
           <span v-if="post.likes > 0">{{ post.likes }}</span>
           <span v-else class="text-[#9B9893]">成為第一個按讚的朋友</span>
         </div>
-        <div class="flex items-center gap-x-2 w-full">
+        <div class="flex w-full items-center gap-x-2">
           <div
-            class="flex-shrink-0 rounded-full w-10 h-10 border-2 border-dark overflow-hidden bg-light"
+            class="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border-2 border-dark bg-light"
           >
             <img
               v-if="post.user?.photo"
               :src="post.user?.photo"
               alt="user_avatar"
-              class="object-cover aspect-square"
+              class="aspect-square object-cover"
             />
           </div>
           <div class="flex w-full">
             <input
               type="text"
-              class="block w-full flex-grow-1 py-1.5 px-4 border-2 border-r-0 border-black placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
+              class="flex-grow-1 block w-full border-2 border-r-0 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
               placeholder="留言..."
             />
             <button
               type="button"
               disabled
-              class="btn-primary px-12 py-2 rounded-none flex-none items-center"
+              class="btn-primary flex-none items-center rounded-none px-12 py-2"
             >
               <div v-if="isLoadingSubmit">
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-primary mr-1.5"
+                  class="mr-1.5 h-5 w-5 animate-spin fill-primary text-gray-200 dark:text-gray-600"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -179,23 +179,23 @@
           <div
             v-for="comment in post.comments"
             :key="comment.id"
-            class="p-4 rounded-xl bg-light/30"
+            class="rounded-xl bg-light/30 p-4"
           >
             <div class="flex gap-x-4">
               <div
-                class="flex-shrink-0 rounded-full w-11 h-11 border-2 border-dark overflow-hidden"
+                class="h-11 w-11 flex-shrink-0 overflow-hidden rounded-full border-2 border-dark"
               >
                 <img
                   :src="comment.user.photo"
                   alt="user_avatar"
-                  class="object-cover aspect-square"
+                  class="aspect-square object-cover"
                 />
               </div>
               <div>
                 <h3 class="text-base font-bold">
                   {{ comment.user.name }}
                 </h3>
-                <p class="text-xs text-[#9B9893] mb-1">
+                <p class="mb-1 text-xs text-[#9B9893]">
                   {{ convertDate(comment.createdAt) }}
                 </p>
                 <p>{{ comment.content }}</p>
@@ -266,7 +266,7 @@ const posts = reactive([]);
 
 watch(
   () => searchData.timeSort,
-  () => fetchPosts()
+  () => fetchPosts(),
 );
 onMounted(() => fetchPosts());
 
@@ -277,10 +277,8 @@ const convertDate = (date) => {
   const day = newDate.getDate();
   const hours = newDate.getHours();
   const minutes = newDate.getMinutes();
-
   const formatDate =
     year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
-
   return formatDate;
 };
 const fetchPosts = async () => {

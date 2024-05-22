@@ -23,7 +23,7 @@
                 ? 'border-green-600 shadow-[-2px_2px_0px_#15803d]'
                 : 'border-red-600 shadow-[-2px_2px_0px_#b91c1c]'
             "
-            class="bg-white mt-4 border-2 flex w-full max-w-sm items-center gap-x-3 overflow-hidden rounded px-4 py-2"
+            class="mt-4 flex w-full max-w-sm items-center gap-x-3 overflow-hidden rounded border-2 bg-white px-4 py-2"
           >
             <div
               :class="

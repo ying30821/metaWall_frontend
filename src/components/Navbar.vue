@@ -1,24 +1,24 @@
 <template>
-  <nav class="bg-white border-b-[3px] border-dark sticky top-0 left-0 z-20">
-    <div class="container mx-auto py-3 flex justify-between items-center">
+  <nav class="sticky left-0 top-0 z-20 border-b-[3px] border-dark bg-white">
+    <div class="container mx-auto flex items-center justify-between py-3">
       <h1
         @click="$router.push('/')"
-        class="font-paytone-one text-2xl cursor-pointer"
+        class="cursor-pointer font-paytone-one text-2xl"
       >
         MetaWall
       </h1>
       <Menu as="div" class="relative inline-block text-left">
         <MenuButton class="flex gap-x-2.5">
           <div
-            class="flex-shrink-0 rounded-full w-[30px] h-[30px] border-2 border-dark overflow-hidden"
+            class="h-[30px] w-[30px] flex-shrink-0 overflow-hidden rounded-full border-2 border-dark"
           >
             <img
               :src="userData.photo"
               alt="user_avatar"
-              class="object-cover aspect-square"
+              class="aspect-square object-cover"
             />
           </div>
-          <p class="pb-1 border-b-2 border-dark font-bold">Member</p>
+          <p class="border-b-2 border-dark pb-1 font-bold">Member</p>
         </MenuButton>
         <transition
           enter-active-class="transition duration-100 ease-out"
@@ -28,12 +28,12 @@
           leave-from-class="transform scale-100 opacity-100"
           leave-to-class="transform scale-95 opacity-0"
         >
-          <div class="absolute right-0 w-56 mt-2">
+          <div class="absolute right-0 mt-2 w-56">
             <div
-              class="bg-white absolute -bottom-2 border-t-0 -right-2 w-full h-full -z-[1] border-2 border-dark"
+              class="absolute -bottom-2 -right-2 -z-[1] h-full w-full border-2 border-t-0 border-dark bg-white"
             />
             <MenuItems
-              class="origin-top-right divide-y-2 divide-dark bg-white text-center border-2 border-dark focus:outline-none"
+              class="origin-top-right divide-y-2 divide-dark border-2 border-dark bg-white text-center focus:outline-none"
             >
               <MenuItem v-slot="{ active }">
                 <button
