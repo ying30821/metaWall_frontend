@@ -14,13 +14,13 @@
         <Avatar
           :image="userData.photo"
           :userName="userData.name"
-          class="h-[50px] w-[50px]"
+          class="h-[50px] w-[50px] transition-all group-hover:scale-110"
         />
         <p class="font-bold group-hover:text-primary">{{ userData.name }}</p>
       </router-link>
       <router-link to="/" class="group flex items-center gap-x-4">
         <div
-          class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] group-hover:bg-primary"
+          class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] transition-all group-hover:scale-110 group-hover:bg-primary"
         >
           <span
             class="material-symbols-outlined text-3xl text-black group-hover:text-white"
@@ -32,7 +32,7 @@
       </router-link>
       <router-link to="/" class="group flex items-center gap-x-4">
         <div
-          class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] group-hover:bg-primary"
+          class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] transition-all group-hover:scale-110 group-hover:bg-primary"
         >
           <span
             class="material-symbols-outlined text-2xl text-black group-hover:text-white"
