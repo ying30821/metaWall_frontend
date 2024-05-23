@@ -35,12 +35,12 @@ const routes = [
   {
     path: '/500',
     name: '500',
-    component: () => import('../views/500.vue'),
+    component: () => import('../views/errorPage/500.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import('../views/404.vue'),
+    component: () => import('../views/errorPage/404.vue'),
   },
 ];
 
