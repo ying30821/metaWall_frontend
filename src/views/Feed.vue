@@ -205,7 +205,7 @@ import {
 } from '@headlessui/vue';
 import { getPosts } from '@/api';
 import { convertDate } from '@/utils';
-import defaultImg from '@/assets/images/error_image.png';
+import postDefaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 import Avatar from '@/components/Avatar.vue';
 
@@ -240,6 +240,6 @@ const fetchPosts = async () => {
   isLoadingPage.value = false;
 };
 const handleErrorImg = (e) => {
-  e.target.src = defaultImg;
+  e.target.src = postDefaultImg;
 };
 </script>
