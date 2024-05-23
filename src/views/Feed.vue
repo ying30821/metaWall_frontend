@@ -204,6 +204,7 @@ import {
   ListboxOptions,
 } from '@headlessui/vue';
 import { getPosts } from '@/api';
+import { convertDate } from '@/utils';
 import defaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 import Avatar from '@/components/Avatar.vue';
@@ -227,17 +228,6 @@ watch(
 
 onMounted(() => fetchPosts());
 
-const convertDate = (date) => {
-  const newDate = new Date(date);
-  const year = newDate.getFullYear();
-  const month = newDate.getMonth() + 1;
-  const day = newDate.getDate();
-  const hours = newDate.getHours();
-  const minutes = newDate.getMinutes();
-  const formatDate =
-    year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
-  return formatDate;
-};
 const fetchPosts = async () => {
   isLoadingPage.value = true;
   const params = {
