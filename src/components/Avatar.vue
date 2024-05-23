@@ -3,27 +3,23 @@
     class="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-secondary text-lg"
   >
     <img
-      v-if="image && !isError"
-      :src="image"
+      :src="image || userDefaultImg"
       :alt="`${userName}_avatar`"
       @error="handleError"
       class="aspect-square object-cover object-center"
     />
-    <p v-else class="text-center">{{ userName.split('')[0] }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import userDefaultImg from '@/assets/images/user_default.png';
 
 defineProps({
   image: String,
   userName: String,
 });
 
-const isError = ref(false);
-
-const handleError = () => {
-  isError.value = true;
+const handleError = (e) => {
+  e.target.src = userDefaultImg;
 };
 </script>
