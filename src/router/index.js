@@ -1,46 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import store from '@/store';
 
 const routes = [
   {
     path: '/',
     name: 'Feed',
     alias: '/feed',
-    component: () => import('../views/Feed.vue'),
+    component: () => import('@/views/Feed.vue'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/Login.vue'),
+    component: () => import('@/views/Login.vue'),
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/Register.vue'),
+    component: () => import('@/views/Register.vue'),
   },
   {
     path: '/new-post',
     name: 'newPost',
-    component: () => import('../views/NewPost.vue'),
+    component: () => import('@/views/NewPost.vue'),
   },
   {
     path: '/follows',
     name: 'Follows',
-    component: () => import('../views/Follows.vue'),
+    component: () => import('@/views/Follows.vue'),
   },
   {
     path: '/likes',
     name: 'Likes',
-    component: () => import('../views/Likes.vue'),
+    component: () => import('@/views/Likes.vue'),
   },
   {
     path: '/500',
     name: '500',
-    component: () => import('../views/errorPage/500.vue'),
+    component: () => import('@/views/errorPage/500.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import('../views/errorPage/404.vue'),
+    component: () => import('@/views/errorPage/404.vue'),
   },
 ];
 
@@ -49,6 +50,15 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {});
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') {
+    return next();
+  }
+  if (to.path === '/register') {
+    return next();
+  }
+  if (!store.state.isSignIn) return next('/login');
+  next();
+});
 
 export default router;
