@@ -1,23 +1,25 @@
 <template>
-  <div>
-    <div v-if="['Login', 'Register'].includes($route.name)">
-      <router-view />
-    </div>
-    <div v-else class="relative">
-      <Navbar class="mb-12" />
-      <div class="container relative mx-auto mb-8 flex w-full gap-x-7">
-        <div class="flex-1">
-          <router-view />
-        </div>
-        <Sidebar />
-      </div>
-    </div>
-    <Notifications />
-  </div>
+  <component :is="currentLayout">
+    <router-view />
+  </component>
+  <Notifications />
 </template>
 
 <script setup>
-import Navbar from '@/components/Navbar.vue';
-import Sidebar from '@/components/Sidebar.vue';
+import { computed, markRaw } from 'vue';
+import { useRoute } from 'vue-router';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import AuthLayout from '@/layouts/AuthLayout.vue';
 import Notifications from '@/components/Notifications.vue';
+
+const route = useRoute();
+const layoutMap = new Map([
+  ['DefaultLayout', DefaultLayout],
+  ['AuthLayout', AuthLayout],
+]);
+
+const currentLayout = computed(() => {
+  if (!route.meta.layout) return 'div';
+  return markRaw(layoutMap.get(route.meta.layout));
+});
 </script>

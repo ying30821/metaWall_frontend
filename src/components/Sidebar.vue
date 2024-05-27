@@ -12,11 +12,14 @@
     <div class="space-y-[22px]">
       <router-link to="/" class="group flex items-center gap-x-4">
         <Avatar
+          v-if="userData"
           :image="userData.photo"
           :userName="userData.name"
           class="h-[50px] w-[50px] transition-all group-hover:scale-110"
         />
-        <p class="font-bold group-hover:text-primary">{{ userData.name }}</p>
+        <p v-if="userData" class="font-bold group-hover:text-primary">
+          {{ userData.name }}
+        </p>
       </router-link>
       <router-link to="/" class="group flex items-center gap-x-4">
         <div

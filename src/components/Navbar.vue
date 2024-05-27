@@ -15,7 +15,7 @@
             :userName="userData.name"
             class="h-[30px] w-[30px] text-sm"
           />
-          <p class="border-b-2 border-dark pb-1 font-bold">
+          <p v-if="userData" class="border-b-2 border-dark pb-1 font-bold">
             {{ userData.name }}
           </p>
         </MenuButton>
