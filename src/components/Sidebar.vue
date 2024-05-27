@@ -47,10 +47,11 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 import Avatar from './Avatar.vue';
 
-const userData = {
-  name: '邊緣小杰',
-  photo: 'https://fakeimg.pl/200x100/?retina=1&text=こんにちは&font=noto',
-};
+const store = useStore();
+
+const userData = computed(() => store.state.userInfo);
 </script>
