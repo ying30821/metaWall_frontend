@@ -15,14 +15,45 @@
         <p class="mb-4 text-center text-lg font-bold lg:mb-9 lg:text-2xl">
           到元宇宙展開全新交友圈
         </p>
-        <form action="#" class="mb-2 space-y-4">
+        <form @submit.prevent="handleSubmit" class="mb-2 space-y-4">
           <div>
-            <input type="email" placeholder="Email" class="form-input" />
+            <input
+              v-model.trim="v$.email.$model"
+              type="email"
+              placeholder="Email"
+              class="form-input"
+            />
+            <div
+              class="input-errors"
+              v-for="error of v$.email.$errors"
+              :key="error.$uid"
+            >
+              <div class="pl-1 text-sm text-[#F57375]">
+                {{ error.$message }}
+              </div>
+            </div>
           </div>
           <div>
-            <input type="password" placeholder="Password" class="form-input" />
+            <input
+              v-model.trim="v$.password.$model"
+              type="password"
+              placeholder="Password"
+              class="form-input"
+            />
+            <div
+              class="input-errors"
+              v-for="error of v$.password.$errors"
+              :key="error.$uid"
+            >
+              <div class="pl-1 text-sm text-[#F57375]">
+                {{ error.$message }}
+              </div>
+            </div>
           </div>
-          <button class="btn-primary w-full shadow-[-2px_2px_0_-0_rgba(0,0,0)]">
+          <button
+            type="submit"
+            class="btn-primary w-full shadow-[-2px_2px_0_-0_rgba(0,0,0)]"
+          >
             登入
           </button>
         </form>
@@ -33,3 +64,52 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, helpers } from '@vuelidate/validators';
+import { notify } from 'notiwind';
+import { signIn } from '@/api';
+
+const router = useRouter();
+const store = useStore();
+const formData = reactive({
+  email: null,
+  password: null,
+});
+const formDataRules = {
+  email: {
+    required: helpers.withMessage('信箱不得為空', required),
+    email: helpers.withMessage('信箱格式錯誤', email),
+  },
+  password: { required: helpers.withMessage('密碼不得為空', required) },
+};
+const v$ = useVuelidate(formDataRules, formData);
+
+const handleSubmit = async () => {
+  const result = await v$.value.$validate();
+  if (!result) return;
+  const payload = {
+    email: formData.email,
+    password: formData.password,
+  };
+  const res = await signIn(payload);
+  if (res.status === 'success') {
+    store.dispatch('setLogin', res.data.user);
+    router.push('/feed');
+    return;
+  }
+  notify(
+    {
+      group: 'generic',
+      title: '登入失敗',
+      text: '帳號或密碼錯誤',
+      type: 'error',
+    },
+    4000,
+  );
+};
+</script>

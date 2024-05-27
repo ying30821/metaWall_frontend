@@ -1,5 +1,7 @@
 import request from './request';
 
+export const signIn = (data) =>
+  request({ url: '/api/users/sign_in', method: 'post', data });
 export const signUp = (data) =>
   request({ url: '/api/users/sign_up', method: 'post', data });
 export const getPosts = (data) =>
