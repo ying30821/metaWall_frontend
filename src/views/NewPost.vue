@@ -65,19 +65,19 @@
 
 <script setup>
 import { reactive, computed } from 'vue';
+import { useStore } from 'vuex';
 import { useVuelidate } from '@vuelidate/core';
-import { notify } from 'notiwind';
 import { required, helpers } from '@vuelidate/validators';
+import { notify } from 'notiwind';
 import { createPost } from '@/api';
 
+const store = useStore();
 const formData = reactive({
-  user: '663f77b111456536a3eb5515',
   content: null,
   imgUrl: null,
 });
 const validateClient = (value) => !value || value.startsWith('https');
 const formDataRules = {
-  user: { required: helpers.withMessage('user id 不得為空', required) },
   content: { required: helpers.withMessage('貼文內容不得為空', required) },
   imgUrl: {
     validateClient: helpers.withMessage('開頭需為 https', validateClient),
@@ -85,11 +85,13 @@ const formDataRules = {
 };
 const v$ = useVuelidate(formDataRules, formData);
 
+const userId = computed(() => store.state.userInfo.id);
+
 const handleSubmitPost = async () => {
   const result = await v$.value.$validate();
   if (!result) return;
   const payload = {
-    user: formData.user,
+    user: userId.value,
     content: formData.content,
     ...(formData.imgUrl && { image: formData.imgUrl }),
   };
