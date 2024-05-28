@@ -142,7 +142,6 @@ const handleSubmit = async () => {
     router.push('/login');
     return;
   }
-  console.log(res);
   if (res.error.response.status === 409) {
     notify(
       {
