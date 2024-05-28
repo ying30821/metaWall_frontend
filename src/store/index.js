@@ -1,14 +1,19 @@
 import { createStore } from 'vuex';
 import router from '@/router';
+import { getProfile } from '@/api';
 
 const store = createStore({
   state() {
     return {
       isSignIn: JSON.parse(localStorage.getItem('login')) ? true : false,
-      userInfo: JSON.parse(localStorage.getItem('user')),
+      token: JSON.parse(localStorage.getItem('token')),
+      userInfo: null,
     };
   },
   mutations: {
+    SET_TOKEN(state, token) {
+      state.token = token;
+    },
     SET_USER_INFO(state, userInfo) {
       state.userInfo = userInfo;
     },
@@ -17,19 +22,23 @@ const store = createStore({
     },
   },
   actions: {
-    setUserInfo({ commit }, data) {
-      localStorage.setItem('user', JSON.stringify(data));
-      commit('SET_USER_INFO', data);
+    setToken({ commit }, data) {
+      localStorage.setItem('token', JSON.stringify(data));
+      commit('SET_TOKEN', data);
     },
-    setLogin({ commit, dispatch }, data) {
+    async setUserInfo({ commit }) {
+      const res = await getProfile();
+      commit('SET_USER_INFO', res.data.user);
+    },
+    setLogin({ commit, dispatch }, token) {
       localStorage.setItem('login', true);
       commit('SET_IS_LOG_IN', true);
-      dispatch('setUserInfo', data);
+      dispatch('setToken', token);
     },
     setLogout({ commit, dispatch, state }) {
       localStorage.setItem('login', false);
       commit('SET_IS_LOG_IN', false);
-      dispatch('setUserInfo', null);
+      dispatch('setToken', null);
       router.push('/login');
     },
   },

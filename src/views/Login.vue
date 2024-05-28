@@ -89,7 +89,7 @@ const handleSubmit = async () => {
   };
   const res = await signIn(payload);
   if (res.status === 'success') {
-    store.dispatch('setLogin', res.data.user);
+    store.dispatch('setLogin', res.data.user.token);
     router.push('/feed');
     return;
   }
