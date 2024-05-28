@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-secondary text-lg"
+    class="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-gray-500 text-lg"
   >
     <img
       :src="image || userDefaultImg"

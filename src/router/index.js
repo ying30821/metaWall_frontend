@@ -52,6 +52,30 @@ const routes = [
     },
   },
   {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('@/views/profile/Profile.vue'),
+    redirect: { name: 'ProfileSettings' },
+    children: [
+      {
+        path: 'settings',
+        name: 'ProfileSettings',
+        component: () => import('@/views/profile/ProfileSettings.vue'),
+        meta: {
+          layout: 'DefaultLayout',
+        },
+      },
+      {
+        path: 'password-modify',
+        name: 'ProfilePwdModify',
+        component: () => import('@/views/profile/ProfilePwdModify.vue'),
+        meta: {
+          layout: 'DefaultLayout',
+        },
+      },
+    ],
+  },
+  {
     path: '/500',
     name: '500',
     component: () => import('@/views/errorPage/500.vue'),
@@ -80,6 +104,7 @@ router.beforeEach((to, from, next) => {
     return next();
   }
   if (!store.state.isSignIn) return next('/login');
+  if (!store.state.userInfo) store.dispatch('setUserInfo');
   next();
 });
 
