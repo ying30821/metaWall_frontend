@@ -9,9 +9,6 @@ export default {
         dark: '#000400',
         light: '#efece7',
       },
-      backgroundImage: {
-        login: "url('./src/assets/images/login.svg')",
-      },
     },
     fontFamily: {
       'paytone-one': ['"Paytone One"', 'sans-serif'],
