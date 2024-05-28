@@ -131,7 +131,7 @@
           <span v-else class="text-[#9B9893]">成為第一個按讚的朋友</span>
         </div>
         <div class="flex w-full items-center gap-x-2">
-          <Avatar :image="post.user.photo" :userName="post.user.name" />
+          <Avatar :image="userData.photo" :userName="userData.name" />
           <div class="flex w-full">
             <input
               type="text"
@@ -195,7 +195,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue';
+import { ref, reactive, computed, watch, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import {
   Listbox,
   ListboxButton,
@@ -209,6 +210,7 @@ import postDefaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 import Avatar from '@/components/Avatar.vue';
 
+const store = useStore();
 const options = [
   { key: 'desc', value: '最新貼文' },
   { key: 'asc', value: '最舊貼文' },
@@ -225,6 +227,8 @@ watch(
   () => searchData.timeSort,
   () => fetchPosts(),
 );
+
+const userData = computed(() => store.state.userInfo);
 
 onMounted(() => fetchPosts());
 
