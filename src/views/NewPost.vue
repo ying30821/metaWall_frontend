@@ -49,11 +49,11 @@
           上傳圖片
         </label>
         <div
-          v-if="postData.imgUrl"
+          v-if="postData.image"
           class="h-40 w-full overflow-hidden rounded-lg border-2 border-dark"
         >
           <img
-            :src="postData.imgUrl"
+            :src="postData.image"
             alt="post_image"
             class="h-full w-full object-cover object-center"
           />
@@ -89,7 +89,7 @@ const isExceedFile = ref(false);
 const isLoadingUpload = ref(false);
 const postData = reactive({
   content: null,
-  imgUrl: null,
+  image: null,
 });
 const postDataRules = {
   content: { required: helpers.withMessage('貼文內容不得為空', required) },
@@ -104,7 +104,7 @@ const handleSubmitPost = async () => {
   const payload = {
     user: userId.value,
     content: postData.content,
-    image: postData.imgUrl,
+    image: postData.image,
   };
   const res = await createPost(payload);
   if (res.status === 'success') {
@@ -132,6 +132,8 @@ const handleSubmitPost = async () => {
 };
 const handleSelectFile = async () => {
   const selectedFile = fileInputRef.value.files[0];
+  isExceedFile.value = false;
+  postData.image = null;
   if (selectedFile) {
     // limit 1MB
     if (selectedFile.size > 1024 * 1024) {
@@ -143,7 +145,7 @@ const handleSelectFile = async () => {
     isLoadingUpload.value = true;
     const res = await uploadImage(formData);
     if (res.status === 'success') {
-      postData.imgUrl = res.data;
+      postData.image = res.data;
       notify(
         {
           group: 'generic',

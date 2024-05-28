@@ -131,6 +131,8 @@ const handleSave = async () => {
 };
 const handleSelectFile = async () => {
   const selectedFile = fileInputRef.value.files[0];
+  isExceedFile.value = false;
+  userData.photo = null;
   if (selectedFile) {
     // limit 1MB
     if (selectedFile.size > 1024 * 1024) {
