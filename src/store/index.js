@@ -38,6 +38,7 @@ const store = createStore({
     setLogout({ commit, dispatch, state }) {
       localStorage.setItem('login', false);
       commit('SET_IS_LOG_IN', false);
+      commit('SET_USER_INFO', null);
       dispatch('setToken', null);
       router.push('/login');
     },
