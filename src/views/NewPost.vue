@@ -75,12 +75,14 @@
 <script setup>
 import { ref, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
 import { notify } from 'notiwind';
 import { createPost, uploadImage } from '@/api';
 
 const store = useStore();
+const router = useRouter();
 const image = ref(null);
 const fileInputRef = ref(null);
 const isExceedFile = ref(false);
@@ -104,7 +106,6 @@ const handleSubmitPost = async () => {
     content: postData.content,
     image: postData.imgUrl,
   };
-  console.log(payload);
   const res = await createPost(payload);
   if (res.status === 'success') {
     notify(
@@ -116,9 +117,7 @@ const handleSubmitPost = async () => {
       },
       4000,
     );
-    postData.content = null;
-    postData.imgUrl = null;
-    v$.value.$reset();
+    router.push('/feed');
   } else {
     notify(
       {
