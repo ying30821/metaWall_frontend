@@ -25,33 +25,42 @@
           v-for="error of v$.content.$errors"
           :key="error.$uid"
         >
-          <div class="pl-1 text-sm text-[#F57375]">{{ error.$message }}</div>
+          <p class="pl-1 text-sm text-[#F57375]">{{ error.$message }}</p>
         </div>
       </div>
       <div class="space-y-1">
         <input
-          v-model.trim="v$.imgUrl.$model"
-          type="text"
-          class="mb-4 block w-full border-2 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
-          placeholder="圖片網址"
+          @change="handleSelectFile"
+          type="file"
+          id="file-input"
+          accept="image/jpeg, image/png, image/jpg"
+          ref="fileInputRef"
+          class="hidden"
         />
+        <label
+          :class="isLoadingUpload ? 'pointer-events-none opacity-75' : ''"
+          for="file-input"
+          class="btn-dark mb-4 items-center"
+        >
+          <div
+            v-if="isLoadingUpload"
+            class="mr-1 h-5 w-5 animate-spin rounded-full border-2 border-gray-500 border-t-secondary"
+          />
+          上傳圖片
+        </label>
         <div
-          v-if="formData.imgUrl"
+          v-if="postData.imgUrl"
           class="h-40 w-full overflow-hidden rounded-lg border-2 border-dark"
         >
           <img
-            :src="formData.imgUrl"
+            :src="postData.imgUrl"
             alt="post_image"
-            class="w-full object-cover"
+            class="h-full w-full object-cover object-center"
           />
         </div>
-        <div
-          class="input-errors"
-          v-for="error of v$.imgUrl.$errors"
-          :key="error.$uid"
-        >
-          <div class="pl-1 text-sm text-[#F57375]">{{ error.$message }}</div>
-        </div>
+        <p v-if="isExceedFile" class="pl-1 text-sm text-[#F57375]">
+          圖片檔案過大，僅限 1mb 以下檔案
+        </p>
       </div>
       <button
         type="submit"
@@ -64,37 +73,38 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
 import { notify } from 'notiwind';
-import { createPost } from '@/api';
+import { createPost, uploadImage } from '@/api';
 
 const store = useStore();
-const formData = reactive({
+const image = ref(null);
+const fileInputRef = ref(null);
+const isExceedFile = ref(false);
+const isLoadingUpload = ref(false);
+const postData = reactive({
   content: null,
   imgUrl: null,
 });
-const validateClient = (value) => !value || value.startsWith('https');
-const formDataRules = {
+const postDataRules = {
   content: { required: helpers.withMessage('貼文內容不得為空', required) },
-  imgUrl: {
-    validateClient: helpers.withMessage('開頭需為 https', validateClient),
-  },
 };
-const v$ = useVuelidate(formDataRules, formData);
+const v$ = useVuelidate(postDataRules, postData);
 
-const userId = computed(() => store.state.userInfo.id);
+const userId = computed(() => store.state.userInfo._id);
 
 const handleSubmitPost = async () => {
   const result = await v$.value.$validate();
   if (!result) return;
   const payload = {
     user: userId.value,
-    content: formData.content,
-    ...(formData.imgUrl && { image: formData.imgUrl }),
+    content: postData.content,
+    image: postData.imgUrl,
   };
+  console.log(payload);
   const res = await createPost(payload);
   if (res.status === 'success') {
     notify(
@@ -106,8 +116,8 @@ const handleSubmitPost = async () => {
       },
       4000,
     );
-    formData.content = null;
-    formData.imgUrl = null;
+    postData.content = null;
+    postData.imgUrl = null;
     v$.value.$reset();
   } else {
     notify(
@@ -119,6 +129,43 @@ const handleSubmitPost = async () => {
       },
       4000,
     );
+  }
+};
+const handleSelectFile = async () => {
+  const selectedFile = fileInputRef.value.files[0];
+  if (selectedFile) {
+    // limit 1MB
+    if (selectedFile.size > 1024 * 1024) {
+      isExceedFile.value = true;
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    isLoadingUpload.value = true;
+    const res = await uploadImage(formData);
+    if (res.status === 'success') {
+      postData.imgUrl = res.data;
+      notify(
+        {
+          group: 'generic',
+          title: '上傳成功',
+          text: '上傳圖片成功！',
+          type: 'success',
+        },
+        4000,
+      );
+    } else {
+      notify(
+        {
+          group: 'generic',
+          title: '上傳失敗',
+          text: '上傳圖片失敗！',
+          type: 'error',
+        },
+        4000,
+      );
+    }
+    isLoadingUpload.value = false;
   }
 };
 </script>
