@@ -47,9 +47,9 @@ const routes = [
     },
   },
   {
-    path: '/follows',
-    name: 'Follows',
-    component: () => import('@/views/Follows.vue'),
+    path: '/followings',
+    name: 'Followings',
+    component: () => import('@/views/Followings.vue'),
     meta: {
       layout: 'DefaultLayout',
     },
