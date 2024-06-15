@@ -57,13 +57,14 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, helpers } from '@vuelidate/validators';
 import { notify } from 'notiwind';
 import { updatePassword } from '@/api';
+import { passwordRegex } from '@/utils';
 
 const router = useRouter();
 const formData = reactive({
   password: null,
   confirm_password: null,
 });
-const validatePassword = helpers.regex(/^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/);
+const validatePassword = helpers.regex(passwordRegex);
 const validatePassword2 = (value) => value === formData.password;
 const formDataRules = {
   password: {

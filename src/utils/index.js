@@ -30,3 +30,5 @@ export const humanizeTime = (time) => {
   }
   return '剛剛';
 };
+
+export const passwordRegex = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/;

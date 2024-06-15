@@ -64,6 +64,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, email, helpers } from '@vuelidate/validators';
 import { notify } from 'notiwind';
 import { signIn } from '@/api';
+import { passwordRegex } from '@/utils';
 
 const router = useRouter();
 const store = useStore();
@@ -71,12 +72,19 @@ const formData = reactive({
   email: null,
   password: null,
 });
+const validatePassword = helpers.regex(passwordRegex);
 const formDataRules = {
   email: {
     required: helpers.withMessage('信箱不得為空', required),
     email: helpers.withMessage('信箱格式錯誤', email),
   },
-  password: { required: helpers.withMessage('密碼不得為空', required) },
+  password: {
+    required: helpers.withMessage('密碼不得為空', required),
+    validatePassword: helpers.withMessage(
+      '密碼需至少 8 碼以上，並中英混合',
+      validatePassword,
+    ),
+  },
 };
 const v$ = useVuelidate(formDataRules, formData);
 
