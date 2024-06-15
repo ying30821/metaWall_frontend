@@ -67,28 +67,9 @@
     </div>
   </div>
   <section>
-    <div v-if="posts.length === 0">
-      <div
-        class="card-shadow overflow-hidden rounded-lg border-2 border-dark bg-white"
-      >
-        <div class="border-b-2 border-dark p-4">
-          <div class="flex gap-x-1.5">
-            <div
-              class="h-2 w-2 rounded-full border border-[#707070] bg-[#DE4B63]"
-            />
-            <div
-              class="h-2 w-2 rounded-full border border-[#707070] bg-[#FAA722]"
-            />
-            <div
-              class="h-2 w-2 rounded-full border border-[#707070] bg-[#83C51D]"
-            />
-          </div>
-        </div>
-        <p class="py-8 text-center text-[#9B9893]">
-          目前尚無動態，新增一則貼文吧！
-        </p>
-      </div>
-    </div>
+    <EmptyContentCard v-if="posts.length === 0">
+      目前尚無動態，新增一則貼文吧！
+    </EmptyContentCard>
     <div v-else class="space-y-4">
       <div
         v-for="post in posts"
@@ -212,6 +193,7 @@ import { notifySuccess, notifyError } from '@/utils/notify';
 import postDefaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 import Avatar from '@/components/Avatar.vue';
+import EmptyContentCard from '@/components/EmptyContentCard.vue';
 
 const store = useStore();
 const options = [
