@@ -3,7 +3,7 @@
     <Navbar class="mb-12" />
     <div class="container relative mx-auto mb-8 flex w-full gap-x-7">
       <div class="flex-1">
-        <router-view />
+        <router-view :key="$route.fullPath" />
       </div>
       <Sidebar />
     </div>

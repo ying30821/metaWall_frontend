@@ -10,9 +10,12 @@
       張貼動態
     </button>
     <div class="space-y-[22px]">
-      <router-link to="/" class="group flex items-center gap-x-4">
+      <router-link
+        v-if="userData"
+        :to="`/feed/${userData._id}`"
+        class="group flex items-center gap-x-4"
+      >
         <Avatar
-          v-if="userData"
           :image="userData.photo"
           :userName="userData.name"
           class="h-[50px] w-[50px] transition-all group-hover:scale-110"
@@ -21,7 +24,7 @@
           {{ userData.name }}
         </p>
       </router-link>
-      <router-link to="/" class="group flex items-center gap-x-4">
+      <router-link to="/followings" class="group flex items-center gap-x-4">
         <div
           class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] transition-all group-hover:scale-110 group-hover:bg-primary"
         >
@@ -33,7 +36,7 @@
         </div>
         <p class="font-bold group-hover:text-primary">追蹤清單</p>
       </router-link>
-      <router-link to="/" class="group flex items-center gap-x-4">
+      <router-link to="/likes" class="group flex items-center gap-x-4">
         <div
           class="inline-flex h-[50px] w-[50px] flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-dark bg-[#E2EDFA] transition-all group-hover:scale-110 group-hover:bg-primary"
         >
@@ -53,6 +56,7 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import Avatar from './Avatar.vue';
+import UserFeed from '../views/UserFeed.vue';
 
 const store = useStore();
 

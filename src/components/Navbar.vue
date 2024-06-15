@@ -37,7 +37,7 @@
               <MenuItem v-slot="{ active }">
                 <button
                   :class="[active ? 'bg-light' : 'text-dark']"
-                  @click="router.push('/')"
+                  @click="router.push(`/feed/${userData._id}`)"
                   class="w-full px-4 py-2"
                 >
                   我的貼文牆

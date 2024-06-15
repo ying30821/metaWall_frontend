@@ -12,6 +12,17 @@ const routes = [
     },
   },
   {
+    path: '/feed/:userId',
+    name: 'UserFeed',
+    component: () => import('@/views/UserFeed.vue'),
+    props: (route) => ({
+      userId: route.params.userId,
+    }),
+    meta: {
+      layout: 'DefaultLayout',
+    },
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue'),

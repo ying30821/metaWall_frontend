@@ -1,5 +1,6 @@
 import request from './request';
 
+// user
 export const signIn = (data) =>
   request({ url: '/api/users/sign_in', method: 'post', data });
 export const signUp = (data) =>
@@ -10,15 +11,22 @@ export const updatePassword = (data) =>
     method: 'patch',
     data,
   });
-export const uploadImage = (data) =>
-  request({
-    url: '/api/upload',
-    method: 'post',
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data,
-  });
+export const getProfile = (data) =>
+  request({ url: '/api/users/profile', method: 'get', data });
+export const editProfile = (data) =>
+  request({ url: '/api/users/profile', method: 'patch', data });
+export const getFollowings = (data) =>
+  request({ url: '/api/users/followings', method: 'get', data });
+export const followUser = (userId, data) =>
+  request({ url: `/api/users/${userId}/follow`, method: 'post', data });
+export const unfollowUser = (userId, data) =>
+  request({ url: `/api/users/${userId}/unfollow`, method: 'delete', data });
+
+// post
 export const getPosts = (data) =>
   request({ url: '/api/posts', method: 'get', params: data });
+export const getUserPosts = (userId, data) =>
+  request({ url: `/api/posts/user/${userId}`, method: 'get', params: data });
 export const createPost = (data) =>
   request({ url: '/api/post', method: 'post', data });
 export const createPostComment = (postId, data) =>
@@ -27,7 +35,12 @@ export const createPostComment = (postId, data) =>
     method: 'post',
     data,
   });
-export const getProfile = (data) =>
-  request({ url: '/api/users/profile', method: 'get', data });
-export const editProfile = (data) =>
-  request({ url: '/api/users/profile', method: 'patch', data });
+
+// upload
+export const uploadImage = (data) =>
+  request({
+    url: '/api/upload',
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data,
+  });
