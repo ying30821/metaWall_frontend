@@ -21,6 +21,12 @@ export const getPosts = (data) =>
   request({ url: '/api/posts', method: 'get', params: data });
 export const createPost = (data) =>
   request({ url: '/api/post', method: 'post', data });
+export const createPostComment = (postId, data) =>
+  request({
+    url: `/api/post/${postId}/comment`,
+    method: 'post',
+    data,
+  });
 export const getProfile = (data) =>
   request({ url: '/api/users/profile', method: 'get', data });
 export const editProfile = (data) =>

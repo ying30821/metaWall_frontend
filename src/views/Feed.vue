@@ -134,13 +134,15 @@
           <Avatar :image="userData.photo" :userName="userData.name" />
           <div class="flex w-full">
             <input
+              v-model="post.currentComment"
               type="text"
               class="flex-grow-1 block w-full border-2 border-r-0 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
               placeholder="留言..."
             />
             <button
               type="button"
-              disabled
+              :disabled="!post.currentComment"
+              @click="addComment(post.id)"
               class="btn-primary flex-none items-center rounded-none px-12 py-2"
             >
               <div v-if="isLoadingSubmit">
@@ -184,7 +186,7 @@
                 <p class="mb-1 text-xs text-[#9B9893]">
                   {{ convertDate(comment.createdAt) }}
                 </p>
-                <p>{{ comment.content }}</p>
+                <p>{{ comment.comment }}</p>
               </div>
             </div>
           </div>
@@ -204,8 +206,9 @@ import {
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/vue';
-import { getPosts } from '@/api';
+import { getPosts, createPostComment } from '@/api';
 import { convertDate } from '@/utils';
+import { notifySuccess, notifyError } from '@/utils/notify';
 import postDefaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 import Avatar from '@/components/Avatar.vue';
@@ -245,5 +248,19 @@ const fetchPosts = async () => {
 };
 const handleErrorImg = (e) => {
   e.target.src = postDefaultImg;
+};
+const addComment = async (id) => {
+  const post = posts.find((post) => post.id === id);
+  const payload = {
+    comment: post.currentComment,
+  };
+  const res = await createPostComment(id, payload);
+  if (res.status === 'success') {
+    notifySuccess('新增成功', '新增留言成功！');
+    post.currentComment = null;
+    fetchPosts();
+    return;
+  }
+  notifyError('新增失敗', '新增留言失敗！');
 };
 </script>
