@@ -80,10 +80,16 @@
           <Avatar
             :image="post.user.photo"
             :userName="post.user.name"
-            class="h-11 w-11"
+            @click="$router.push(`/feed/${post.user._id}`)"
+            class="h-11 w-11 hover:cursor-pointer hover:ring-2 hover:ring-primary/40"
           />
           <div>
-            <h2 class="text-base font-bold">{{ post.user?.name }}</h2>
+            <h2
+              @click="$router.push(`/feed/${post.user._id}`)"
+              class="text-base font-bold hover:cursor-pointer hover:text-primary hover:underline"
+            >
+              {{ post.user?.name }}
+            </h2>
             <p class="mb-1 text-xs text-[#9B9893]">
               {{ convertDate(post.createdAt) }}
             </p>
