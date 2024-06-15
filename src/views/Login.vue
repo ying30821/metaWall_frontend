@@ -62,9 +62,9 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, helpers } from '@vuelidate/validators';
-import { notify } from 'notiwind';
 import { signIn } from '@/api';
 import { passwordRegex } from '@/utils';
+import { notifyError } from '@/utils/notify';
 
 const router = useRouter();
 const store = useStore();
@@ -101,14 +101,6 @@ const handleSubmit = async () => {
     router.push('/feed');
     return;
   }
-  notify(
-    {
-      group: 'generic',
-      title: '登入失敗',
-      text: '帳號或密碼錯誤',
-      type: 'error',
-    },
-    4000,
-  );
+  notifyError('登入失敗', '帳號或密碼錯誤');
 };
 </script>

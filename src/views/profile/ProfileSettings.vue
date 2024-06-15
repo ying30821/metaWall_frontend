@@ -81,8 +81,8 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { notify } from 'notiwind';
 import { getProfile, editProfile, uploadImage } from '@/api';
+import { notifySuccess, notifyError } from '@/utils/notify';
 import Avatar from '@/components/Avatar.vue';
 
 const store = useStore();
@@ -107,26 +107,10 @@ const handleSave = async () => {
   };
   const res = await editProfile(payload);
   if (res.status === 'success') {
-    notify(
-      {
-        group: 'generic',
-        title: '修改成功',
-        text: '修改資料成功！',
-        type: 'success',
-      },
-      4000,
-    );
+    notifySuccess('修改成功', '修改資料成功！');
     store.dispatch('setUserInfo');
   } else {
-    notify(
-      {
-        group: 'generic',
-        title: '修改失敗',
-        text: '修改貼文失敗！',
-        type: 'error',
-      },
-      4000,
-    );
+    notifyError('修改失敗', '修改資料失敗！');
   }
 };
 const handleSelectFile = async () => {
@@ -145,25 +129,9 @@ const handleSelectFile = async () => {
     const res = await uploadImage(formData);
     if (res.status === 'success') {
       userData.photo = res.data;
-      notify(
-        {
-          group: 'generic',
-          title: '上傳成功',
-          text: '上傳圖片成功！',
-          type: 'success',
-        },
-        4000,
-      );
+      notifySuccess('上傳成功', '上傳圖片成功！');
     } else {
-      notify(
-        {
-          group: 'generic',
-          title: '上傳失敗',
-          text: '上傳圖片失敗！',
-          type: 'error',
-        },
-        4000,
-      );
+      notifyError('上傳失敗', '上傳圖片失敗！');
     }
     isLoadingUpload.value = false;
   }

@@ -78,8 +78,8 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
-import { notify } from 'notiwind';
 import { createPost, uploadImage } from '@/api';
+import { notifySuccess, notifyError } from '@/utils/notify';
 
 const store = useStore();
 const router = useRouter();
@@ -108,26 +108,10 @@ const handleSubmitPost = async () => {
   };
   const res = await createPost(payload);
   if (res.status === 'success') {
-    notify(
-      {
-        group: 'generic',
-        title: '新增成功',
-        text: '新增貼文成功！',
-        type: 'success',
-      },
-      4000,
-    );
+    notifySuccess('新增成功', '新增貼文成功！');
     router.push('/feed');
   } else {
-    notify(
-      {
-        group: 'generic',
-        title: '新增失敗',
-        text: '新增貼文失敗！',
-        type: 'error',
-      },
-      4000,
-    );
+    notifyError('新增失敗', '新增貼文失敗！');
   }
 };
 const handleSelectFile = async () => {
@@ -146,25 +130,9 @@ const handleSelectFile = async () => {
     const res = await uploadImage(formData);
     if (res.status === 'success') {
       postData.image = res.data;
-      notify(
-        {
-          group: 'generic',
-          title: '上傳成功',
-          text: '上傳圖片成功！',
-          type: 'success',
-        },
-        4000,
-      );
+      notifySuccess('上傳成功', '上傳圖片成功！');
     } else {
-      notify(
-        {
-          group: 'generic',
-          title: '上傳失敗',
-          text: '上傳圖片失敗！',
-          type: 'error',
-        },
-        4000,
-      );
+      notifyError('上傳失敗', '上傳圖片失敗！');
     }
     isLoadingUpload.value = false;
   }

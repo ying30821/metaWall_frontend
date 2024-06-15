@@ -93,9 +93,9 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, helpers } from '@vuelidate/validators';
-import { notify } from 'notiwind';
 import { signUp } from '@/api';
 import { passwordRegex } from '@/utils';
+import { notifyError } from '@/utils/notify';
 
 const router = useRouter();
 const formData = reactive({
@@ -144,25 +144,9 @@ const handleSubmit = async () => {
     return;
   }
   if (res.error.response.status === 409) {
-    notify(
-      {
-        group: 'generic',
-        title: '註冊失敗',
-        text: '帳號已被註冊，請替換新的 Email',
-        type: 'error',
-      },
-      4000,
-    );
+    notifyError('註冊失敗', '帳號已被註冊，請替換新的 Email');
     return;
   }
-  notify(
-    {
-      group: 'generic',
-      title: '註冊失敗',
-      text: '請洽管理員',
-      type: 'error',
-    },
-    4000,
-  );
+  notifyError('註冊失敗', '請洽管理員');
 };
 </script>

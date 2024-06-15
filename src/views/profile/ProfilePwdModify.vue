@@ -55,9 +55,9 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { required, email, minLength, helpers } from '@vuelidate/validators';
-import { notify } from 'notiwind';
 import { updatePassword } from '@/api';
 import { passwordRegex } from '@/utils';
+import { notifySuccess, notifyError } from '@/utils/notify';
 
 const router = useRouter();
 const formData = reactive({
@@ -90,28 +90,13 @@ const handleSubmit = async () => {
   };
   const res = await updatePassword(payload);
   if (res.status === 'success') {
-    notify(
-      {
-        group: 'generic',
-        title: '修改成功',
-        text: '密碼修改成功',
-        type: 'success',
-      },
-      4000,
-    );
+    notifySuccess('修改成功', '密碼修改成功!');
+
     formData.password = null;
     formData.confirm_password = null;
     v$.value.$reset();
     return;
   }
-  notify(
-    {
-      group: 'generic',
-      title: '修改失敗',
-      text: '密碼修改失敗',
-      type: 'error',
-    },
-    4000,
-  );
+  notifyError('修改失敗', '密碼修改失敗!');
 };
 </script>
