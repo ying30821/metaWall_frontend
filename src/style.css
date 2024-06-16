@@ -23,7 +23,7 @@
     @apply inline-flex justify-center rounded-t-lg border-2 border-dark bg-white px-6 py-2 text-center  text-base text-dark hover:bg-secondary hover:text-black disabled:cursor-not-allowed disabled:border-[#808080] disabled:bg-[#A8B0B9] disabled:text-white;
   }
   .form-input {
-    @apply block w-full border-0 px-4 py-2  text-sm text-gray-900 ring-2 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary lg:px-5 lg:py-3 lg:text-base;
+    @apply block w-full border-0 px-4 py-2  text-sm text-gray-900 ring-2 ring-inset ring-black placeholder:text-gray-400 focus:outline-0 focus:ring-2 focus:ring-inset focus:ring-primary lg:px-5 lg:py-3 lg:text-base;
   }
 }
 @layer utilities {

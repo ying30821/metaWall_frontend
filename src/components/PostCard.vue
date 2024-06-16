@@ -124,7 +124,24 @@
             <p class="mb-1 text-xs text-[#9B9893]">
               {{ convertDate(comment.createdAt) }}
             </p>
-            <p>{{ comment.comment }}</p>
+            <div v-if="isEditComment">
+              <div class="flex items-center gap-x-2">
+                <input
+                  v-model="tempComment.comment"
+                  @keyup.esc="() => (isEditComment = false)"
+                  @keyup.enter="confirmEditComment"
+                  class="form-input rounded-lg bg-stone-200 py-1.5 ring-0 focus:ring-0"
+                />
+                <span
+                  @click="confirmEditComment"
+                  class="material-symbols-outlined text-xl"
+                >
+                  send
+                </span>
+              </div>
+              <p class="mt-0.5 text-xs text-gray-400">按 Esc 鍵可取消</p>
+            </div>
+            <p v-else>{{ comment.comment }}</p>
           </div>
         </div>
         <Popover
@@ -151,6 +168,7 @@
               >
                 <ul class="space-y-0.5 bg-light px-2 py-1.5">
                   <li
+                    @click="editComment(comment)"
                     class="flex items-center gap-x-1.5 rounded-md p-0.5 text-sm hover:cursor-pointer hover:bg-gray-50"
                   >
                     <span class="material-symbols-outlined text-lg">
@@ -178,11 +196,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useStore } from 'vuex';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 import {
   createPostComment,
+  editPostComment,
   deletePostComment,
   addPostLike,
   deletePostLike,
@@ -198,6 +217,11 @@ const props = defineProps({
 const emit = defineEmits(['fetchData']);
 
 const store = useStore();
+const isEditComment = ref(false);
+const tempComment = reactive({
+  id: null,
+  comment: null,
+});
 
 const userData = computed(() => store.state.userInfo);
 
@@ -231,6 +255,23 @@ const editLike = async (postId, isLike) => {
   const res = await currentFunc(postId);
   if (res.status === 'success') {
     emit('fetchData');
+  }
+};
+const editComment = (comment) => {
+  tempComment.comment = comment.comment;
+  tempComment.id = comment.id;
+  isEditComment.value = true;
+};
+const confirmEditComment = async () => {
+  const payload = {
+    comment: tempComment.comment,
+  };
+  const res = await editPostComment(tempComment.id, payload);
+  if (res.status === 'success') {
+    emit('fetchData');
+    tempComment.comment = null;
+    tempComment.id = null;
+    isEditComment.value = false;
   }
 };
 </script>

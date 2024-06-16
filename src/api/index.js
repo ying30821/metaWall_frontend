@@ -39,6 +39,12 @@ export const createPostComment = (postId, data) =>
     method: 'post',
     data,
   });
+export const editPostComment = (commentId, data) =>
+  request({
+    url: `/api/post/comment/${commentId}`,
+    method: 'patch',
+    data,
+  });
 export const deletePostComment = (commentId, data) =>
   request({
     url: `/api/post/comment/${commentId}`,
