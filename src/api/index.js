@@ -39,6 +39,12 @@ export const createPostComment = (postId, data) =>
     method: 'post',
     data,
   });
+export const deletePostComment = (commentId, data) =>
+  request({
+    url: `/api/post/comment/${commentId}`,
+    method: 'delete',
+    data,
+  });
 export const addPostLike = (postId, data) =>
   request({ url: `/api/post/${postId}/like`, method: 'post', data });
 export const deletePostLike = (postId, data) =>
