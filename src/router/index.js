@@ -55,9 +55,9 @@ const routes = [
     },
   },
   {
-    path: '/likes',
-    name: 'Likes',
-    component: () => import('@/views/Likes.vue'),
+    path: '/liked-posts',
+    name: 'LikedPosts',
+    component: () => import('@/views/LikedPosts.vue'),
     meta: {
       layout: 'DefaultLayout',
     },

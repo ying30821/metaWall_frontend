@@ -5,29 +5,33 @@
     >
       我按讚的貼文
     </h2>
-    <div class="space-y-4">
+    <EmptyContentCard v-if="likePosts.length === 0">
+      目前尚無貼文
+    </EmptyContentCard>
+    <div v-else class="space-y-4">
       <div
-        v-for="like in likes"
-        :key="like.id"
+        v-for="post in likePosts"
+        :key="post._id"
         class="card-shadow flex items-center justify-between gap-x-4 overflow-hidden rounded-lg border-2 border-dark bg-white p-4"
       >
         <div class="flex flex-1 items-center gap-x-4 truncate">
-          <Avatar :image="like.user.photo" :userName="like.user.name" />
+          <Avatar :image="post.user.photo" :userName="post.user.name" />
           <div class="space-y-1 truncate">
             <h3 class="text-base font-bold">
-              {{ like.user.name }}
+              {{ post.user.name }}
             </h3>
             <div
               class="flex flex-col gap-1 lg:flex-row lg:items-center lg:justify-between"
             >
               <p class="truncate text-sm text-[#9B9893]">
-                發文時間：{{ convertDate(like.createdAt) }}
+                發文時間：{{ convertDate(post.createdAt) }}
               </p>
             </div>
           </div>
         </div>
         <div class="flex items-center gap-x-4 lg:gap-x-9">
           <button
+            @click="deleteLike(post._id)"
             type="button"
             class="flex flex-col items-center transition-all hover:scale-105"
           >
@@ -52,34 +56,29 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import { convertDate } from '@/utils';
+import { getLikePosts, deletePostLike } from '@/api';
 import Avatar from '@/components/Avatar.vue';
+import EmptyContentCard from '@/components/EmptyContentCard.vue';
 
-const likes = reactive([
-  {
-    id: 1,
-    user: {
-      name: '西林',
-      photo: 'https://fakeimg.pl/250x100/ff0000/',
-    },
-    createdAt: '2024-05-08T14:45:59.587Z',
-  },
-  {
-    id: 1,
-    user: {
-      name: '西林',
-      photo: 'https://fakeimg.pl/250x100/ff0000/',
-    },
-    createdAt: '2024-05-08T14:45:59.587Z',
-  },
-  {
-    id: 1,
-    user: {
-      name: '西林',
-      photo: 'https://fakeimg.pl/250x100/ff0000/',
-    },
-    createdAt: '2024-05-08T14:45:59.587Z',
-  },
-]);
+const store = useStore();
+const likePosts = reactive([]);
+
+const userData = computed(() => store.state.userInfo);
+
+onMounted(() => fetchLikePosts());
+
+const fetchLikePosts = async () => {
+  const res = await getLikePosts();
+  likePosts.splice(0);
+  likePosts.push(...res.data);
+};
+const deleteLike = async (id) => {
+  const res = await deletePostLike(id);
+  if (res.status === 'success') {
+    fetchLikePosts();
+  }
+};
 </script>

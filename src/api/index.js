@@ -21,6 +21,8 @@ export const followUser = (userId, data) =>
   request({ url: `/api/users/${userId}/follow`, method: 'post', data });
 export const unfollowUser = (userId, data) =>
   request({ url: `/api/users/${userId}/unfollow`, method: 'delete', data });
+export const getLikePosts = (data) =>
+  request({ url: '/api/users/liked_posts', method: 'get', params: data });
 
 // post
 export const getPosts = (data) =>
