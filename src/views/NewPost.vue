@@ -96,7 +96,7 @@ const postDataRules = {
 };
 const v$ = useVuelidate(postDataRules, postData);
 
-const userId = computed(() => store.state.userInfo._id);
+const userId = computed(() => store.state.userInfo.id);
 
 const handleSubmitPost = async () => {
   const result = await v$.value.$validate();

@@ -80,12 +80,12 @@
           <Avatar
             :image="post.user.photo"
             :userName="post.user.name"
-            @click="$router.push(`/feed/${post.user._id}`)"
+            @click="$router.push(`/feed/${post.user.id}`)"
             class="h-11 w-11 hover:cursor-pointer hover:ring-2 hover:ring-primary/40"
           />
           <div>
             <h2
-              @click="$router.push(`/feed/${post.user._id}`)"
+              @click="$router.push(`/feed/${post.user.id}`)"
               class="text-base font-bold hover:cursor-pointer hover:text-primary hover:underline"
             >
               {{ post.user?.name }}
@@ -113,7 +113,7 @@
               post.isLike ? 'isLike text-primary' : '',
               post.likes.length > 0 ? 'text-primary' : 'text-[#9B9893]',
             ]"
-            @click="editLike(post._id, post.isLike)"
+            @click="editLike(post.id, post.isLike)"
             type="button"
             class="material-symbols-outlined fill-red-500 text-2xl transition-all hover:scale-105"
           >
@@ -136,7 +136,7 @@
             <button
               type="button"
               :disabled="!post.currentComment"
-              @click="addComment(post._id)"
+              @click="addComment(post.id)"
               class="btn-primary flex-none items-center rounded-none px-12 py-2"
             >
               留言
@@ -146,7 +146,7 @@
         <div v-if="post.comments" class="space-y-4">
           <div
             v-for="comment in post.comments"
-            :key="comment._id"
+            :key="comment.id"
             class="rounded-xl bg-light/30 p-4"
           >
             <div class="flex gap-x-4">
@@ -225,7 +225,7 @@ const fetchPosts = async () => {
   posts.splice(0);
   const data = res.data.map((post) => ({
     ...post,
-    isLike: post.likes.some((like) => like.user === userData.value._id),
+    isLike: post.likes.some((like) => like.user === userData.value.id),
   }));
   posts.push(...data);
   isLoadingPage.value = false;
@@ -234,7 +234,7 @@ const handleErrorImg = (e) => {
   e.target.src = postDefaultImg;
 };
 const addComment = async (id) => {
-  const post = posts.find((post) => post._id === id);
+  const post = posts.find((post) => post.id === id);
   const payload = {
     comment: post.currentComment,
   };

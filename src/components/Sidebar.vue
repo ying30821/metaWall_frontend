@@ -12,7 +12,7 @@
     <div class="space-y-[22px]">
       <router-link
         v-if="userData"
-        :to="`/feed/${userData._id}`"
+        :to="`/feed/${userData.id}`"
         class="group flex items-center gap-x-4"
       >
         <Avatar

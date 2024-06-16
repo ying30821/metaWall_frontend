@@ -12,8 +12,8 @@
     <div v-else class="space-y-4">
       <div
         v-for="following in followings"
-        :key="following._id"
-        @click="$router.push(`/feed/${following.user._id}`)"
+        :key="following.id"
+        @click="$router.push(`/feed/${following.user.id}`)"
         class="card-shadow group flex items-center gap-x-4 overflow-hidden rounded-lg border-2 border-dark bg-white p-4 hover:cursor-pointer"
       >
         <Avatar :image="following.user.photo" :userName="following.user.name" />

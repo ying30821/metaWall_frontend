@@ -43,13 +43,13 @@
       />
     </div>
     <fieldset class="mb-8 w-full space-y-2">
-      <legend for="sex" class="block text-dark">性別</legend>
+      <legend for="gender" class="block text-dark">性別</legend>
       <div class="flex items-center gap-x-6">
         <div class="flex items-center gap-x-3">
           <input
-            v-model="userData.sex"
+            v-model="userData.gender"
             id="male"
-            name="sex"
+            name="gender"
             type="radio"
             value="male"
             class="h-5 w-5 rounded-full border-2"
@@ -58,9 +58,9 @@
         </div>
         <div class="flex items-center gap-x-3">
           <input
-            v-model="userData.sex"
+            v-model="userData.gender"
             id="female"
-            name="sex"
+            name="gender"
             type="radio"
             value="female"
             class="h-5 w-5 border-2 border-dark text-dark focus:ring-dark"
@@ -102,7 +102,7 @@ const fetchProfile = async () => {
 const handleSave = async () => {
   const payload = {
     name: userData.name,
-    sex: userData.sex,
+    gender: userData.gender,
     photo: userData.photo,
   };
   const res = await editProfile(payload);

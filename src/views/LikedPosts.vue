@@ -11,7 +11,7 @@
     <div v-else class="space-y-4">
       <div
         v-for="post in likePosts"
-        :key="post._id"
+        :key="post.id"
         class="card-shadow flex items-center justify-between gap-x-4 overflow-hidden rounded-lg border-2 border-dark bg-white p-4"
       >
         <div class="flex flex-1 items-center gap-x-4 truncate">
@@ -31,7 +31,7 @@
         </div>
         <div class="flex items-center gap-x-4 lg:gap-x-9">
           <button
-            @click="deleteLike(post._id)"
+            @click="deleteLike(post.id)"
             type="button"
             class="flex flex-col items-center transition-all hover:scale-105"
           >
@@ -41,7 +41,7 @@
             <span class="text-center font-bold">取消</span>
           </button>
           <button
-            @click="$router.push(`posts/${post._id}`)"
+            @click="$router.push(`posts/${post.id}`)"
             type="button"
             class="flex flex-col items-center transition-all hover:scale-105"
           >

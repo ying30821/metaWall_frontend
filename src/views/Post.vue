@@ -9,12 +9,12 @@
         <Avatar
           :image="post.user.photo"
           :userName="post.user.name"
-          @click="$router.push(`/feed/${post.user._id}`)"
+          @click="$router.push(`/feed/${post.user.id}`)"
           class="h-11 w-11 hover:cursor-pointer hover:ring-2 hover:ring-primary/40"
         />
         <div>
           <h2
-            @click="$router.push(`/feed/${post.user._id}`)"
+            @click="$router.push(`/feed/${post.user.id}`)"
             class="text-base font-bold hover:cursor-pointer hover:text-primary hover:underline"
           >
             {{ post.user?.name }}
@@ -75,7 +75,7 @@
       <div v-if="post.comments" class="space-y-4">
         <div
           v-for="comment in post.comments"
-          :key="comment._id"
+          :key="comment.id"
           class="rounded-xl bg-light/30 p-4"
         >
           <div class="flex gap-x-4">
@@ -132,7 +132,7 @@ const fetchPost = async () => {
   const res = await getPost(props.postId);
   if (res?.status === 'success') {
     res.data.isLike = res.data.likes.some(
-      (like) => like.user === userData.value._id,
+      (like) => like.user === userData.value.id,
     );
     Object.assign(post, res.data);
     isLoadingPage.value = false;

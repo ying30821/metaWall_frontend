@@ -20,7 +20,7 @@
         </p>
       </div>
       <button
-        v-if="feed.user._id !== userData._id"
+        v-if="feed.user.id !== userData.id"
         :class="isFollowing ? 'bg-light' : 'bg-secondary'"
         @click="editFollowing"
         type="button"
@@ -103,7 +103,7 @@
     <div v-else class="space-y-4">
       <div
         v-for="post in feed.posts"
-        :key="post._id"
+        :key="post.id"
         class="card-shadow space-y-4 overflow-hidden rounded-lg border-2 border-dark bg-white p-6 lg:px-10"
       >
         <div class="flex items-center gap-x-4">
@@ -137,7 +137,7 @@
               post.isLike ? 'isLike text-primary' : '',
               post.likes.length > 0 ? 'text-primary' : 'text-[#9B9893]',
             ]"
-            @click="editLike(post._id, post.isLike)"
+            @click="editLike(post.id, post.isLike)"
             type="button"
             class="material-symbols-outlined fill-red-500 text-2xl transition-all hover:scale-105"
           >
@@ -170,7 +170,7 @@
         <div v-if="post.comments" class="space-y-4">
           <div
             v-for="comment in post.comments"
-            :key="comment._id"
+            :key="comment.id"
             class="rounded-xl bg-light/30 p-4"
           >
             <div class="flex gap-x-4">
@@ -253,7 +253,7 @@ const userData = computed(() => store.state.userInfo);
 const isFollowing = computed(() => {
   if (Object.keys(feed.user).length === 0 || !userData.value) return false;
   return feed.user.followers.some(
-    (follower) => follower.user === userData.value._id,
+    (follower) => follower.user === userData.value.id,
   );
 });
 
@@ -269,7 +269,7 @@ const fetchUserPosts = async () => {
   if (res?.status === 'success') {
     const postsData = res.data.posts.map((post) => ({
       ...post,
-      isLike: post.likes.some((like) => like.user === userData.value._id),
+      isLike: post.likes.some((like) => like.user === userData.value.id),
     }));
     feed.posts = postsData;
     feed.user = res.data.user;
@@ -300,7 +300,7 @@ const addComment = async (id) => {
 };
 const editFollowing = async () => {
   const currentFunc = isFollowing.value ? unfollowUser : followUser;
-  const res = await currentFunc(feed.user._id);
+  const res = await currentFunc(feed.user.id);
   if (res.status === 'success') {
     fetchUserPosts();
   }
