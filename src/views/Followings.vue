@@ -9,7 +9,7 @@
     <EmptyContentCard v-if="followings.length === 0">
       目前尚無追蹤任何人
     </EmptyContentCard>
-    <div class="space-y-4">
+    <div v-else class="space-y-4">
       <div
         v-for="following in followings"
         :key="following._id"
