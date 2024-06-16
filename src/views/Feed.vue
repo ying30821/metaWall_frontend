@@ -108,13 +108,20 @@
           />
         </div>
         <div class="flex items-center gap-x-2">
-          <span
-            :class="post.likes > 0 ? 'text-primary' : 'text-[#9B9893]'"
-            class="material-symbols-outlined text-2xl"
+          <button
+            :class="[
+              post.isLike ? 'isLike text-primary' : '',
+              post.likes.length > 0 ? 'text-primary' : 'text-[#9B9893]',
+            ]"
+            @click="editLike(post._id, post.isLike)"
+            type="button"
+            class="material-symbols-outlined fill-red-500 text-2xl transition-all hover:scale-105"
           >
             thumb_up
-          </span>
-          <span v-if="post.likes > 0">{{ post.likes }}</span>
+          </button>
+          <span v-if="post.likes.length > 0">{{
+            toCurrency(post.likes.length)
+          }}</span>
           <span v-else class="text-[#9B9893]">成為第一個按讚的朋友</span>
         </div>
         <div class="flex w-full items-center gap-x-2">
@@ -129,7 +136,7 @@
             <button
               type="button"
               :disabled="!post.currentComment"
-              @click="addComment(post.id)"
+              @click="addComment(post._id)"
               class="btn-primary flex-none items-center rounded-none px-12 py-2"
             >
               <div v-if="isLoadingSubmit">
@@ -158,7 +165,7 @@
         <div v-if="post.comments" class="space-y-4">
           <div
             v-for="comment in post.comments"
-            :key="comment.id"
+            :key="comment._id"
             class="rounded-xl bg-light/30 p-4"
           >
             <div class="flex gap-x-4">
@@ -193,8 +200,13 @@ import {
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/vue';
-import { getPosts, createPostComment } from '@/api';
-import { convertDate } from '@/utils';
+import {
+  getPosts,
+  createPostComment,
+  addPostLike,
+  deletePostLike,
+} from '@/api';
+import { convertDate, toCurrency } from '@/utils';
 import { notifySuccess, notifyError } from '@/utils/notify';
 import postDefaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
@@ -231,14 +243,18 @@ const fetchPosts = async () => {
   };
   const res = await getPosts(params);
   posts.splice(0);
-  posts.push(...res.data);
+  const data = res.data.map((post) => ({
+    ...post,
+    isLike: post.likes.some((like) => like.user === userData.value._id),
+  }));
+  posts.push(...data);
   isLoadingPage.value = false;
 };
 const handleErrorImg = (e) => {
   e.target.src = postDefaultImg;
 };
 const addComment = async (id) => {
-  const post = posts.find((post) => post.id === id);
+  const post = posts.find((post) => post._id === id);
   const payload = {
     comment: post.currentComment,
   };
@@ -251,4 +267,21 @@ const addComment = async (id) => {
   }
   notifyError('新增失敗', '新增留言失敗！');
 };
+const editLike = async (postId, isLike) => {
+  const currentFunc = isLike ? deletePostLike : addPostLike;
+  const res = await currentFunc(postId);
+  if (res.status === 'success') {
+    fetchPosts();
+  }
+};
 </script>
+
+<style lang="scss" scoped>
+.isLike.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+</style>

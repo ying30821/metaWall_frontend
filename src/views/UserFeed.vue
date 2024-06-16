@@ -97,28 +97,9 @@
     </div>
   </div>
   <section>
-    <div v-if="feed.posts.length === 0">
-      <div
-        class="card-shadow overflow-hidden rounded-lg border-2 border-dark bg-white"
-      >
-        <div class="border-b-2 border-dark p-4">
-          <div class="flex gap-x-1.5">
-            <div
-              class="h-2 w-2 rounded-full border border-[#707070] bg-[#DE4B63]"
-            />
-            <div
-              class="h-2 w-2 rounded-full border border-[#707070] bg-[#FAA722]"
-            />
-            <div
-              class="h-2 w-2 rounded-full border border-[#707070] bg-[#83C51D]"
-            />
-          </div>
-        </div>
-        <p class="py-8 text-center text-[#9B9893]">
-          目前尚無動態，新增一則貼文吧！
-        </p>
-      </div>
-    </div>
+    <EmptyContentCard v-if="feed.posts.length === 0">
+      目前尚無動態，新增一則貼文吧！
+    </EmptyContentCard>
     <div v-else class="space-y-4">
       <div
         v-for="post in feed.posts"
@@ -151,13 +132,20 @@
           />
         </div>
         <div class="flex items-center gap-x-2">
-          <span
-            :class="post.likes > 0 ? 'text-primary' : 'text-[#9B9893]'"
-            class="material-symbols-outlined text-2xl"
+          <button
+            :class="[
+              post.isLike ? 'isLike text-primary' : '',
+              post.likes.length > 0 ? 'text-primary' : 'text-[#9B9893]',
+            ]"
+            @click="editLike(post._id, post.isLike)"
+            type="button"
+            class="material-symbols-outlined fill-red-500 text-2xl transition-all hover:scale-105"
           >
             thumb_up
-          </span>
-          <span v-if="post.likes > 0">{{ post.likes }}</span>
+          </button>
+          <span v-if="post.likes.length > 0">{{
+            toCurrency(post.likes.length)
+          }}</span>
           <span v-else class="text-[#9B9893]">成為第一個按讚的朋友</span>
         </div>
         <div class="flex w-full items-center gap-x-2">
@@ -243,12 +231,15 @@ import {
   createPostComment,
   followUser,
   unfollowUser,
+  addPostLike,
+  deletePostLike,
 } from '@/api';
 import { convertDate, toCurrency } from '@/utils';
 import { notifySuccess, notifyError } from '@/utils/notify';
 import postDefaultImg from '@/assets/images/error_image.png';
 import Loading from '@/components/Loading.vue';
 import Avatar from '@/components/Avatar.vue';
+import EmptyContentCard from '@/components/EmptyContentCard.vue';
 
 const props = defineProps({
   userId: String,
@@ -296,7 +287,11 @@ const fetchUserPosts = async () => {
   };
   const res = await getUserPosts(props.userId, params);
   if (res?.status === 'success') {
-    feed.posts = res.data.posts;
+    const postsData = res.data.posts.map((post) => ({
+      ...post,
+      isLike: post.likes.some((like) => like.user === userData.value._id),
+    }));
+    feed.posts = postsData;
     feed.user = res.data.user;
     isLoadingPage.value = false;
     return;
@@ -330,4 +325,21 @@ const editFollowing = async () => {
     fetchUserPosts();
   }
 };
+const editLike = async (postId, isLike) => {
+  const currentFunc = isLike ? deletePostLike : addPostLike;
+  const res = await currentFunc(postId);
+  if (res.status === 'success') {
+    fetchUserPosts();
+  }
+};
 </script>
+
+<style lang="scss" scoped>
+.isLike.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+</style>
