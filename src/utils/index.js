@@ -1,14 +1,20 @@
 export const convertDate = (date) => {
   if (!date) return '';
+
   const newDate = new Date(date);
   const year = newDate.getFullYear();
   const month = newDate.getMonth() + 1;
   const day = newDate.getDate();
-  const hours = newDate.getHours();
+  let hours = newDate.getHours();
   const minutes = newDate.getMinutes();
-  const formatDate =
-    year + '/' + month + '/' + day + ' ' + hours + ':' + minutes;
-  return formatDate;
+
+  const period = hours >= 12 ? '下午' : '上午';
+  hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+
+  const formattedHours = hours < 10 ? '0' + hours : hours;
+  const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+  return `${year}/${month}/${day} ${period} ${formattedHours}:${formattedMinutes}`;
 };
 
 export const humanizeTime = (time) => {
