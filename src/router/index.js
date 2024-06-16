@@ -23,6 +23,17 @@ const routes = [
     },
   },
   {
+    path: '/posts/:postId',
+    name: 'Post',
+    component: () => import('@/views/Post.vue'),
+    props: (route) => ({
+      postId: route.params.postId,
+    }),
+    meta: {
+      layout: 'DefaultLayout',
+    },
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/Login.vue'),

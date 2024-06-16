@@ -20,7 +20,7 @@ export const getFollowings = (data) =>
 export const followUser = (userId, data) =>
   request({ url: `/api/users/${userId}/follow`, method: 'post', data });
 export const unfollowUser = (userId, data) =>
-  request({ url: `/api/users/${userId}/unfollow`, method: 'delete', data });
+  request({ url: `/api/users/${userId}/follow`, method: 'delete', data });
 export const getLikePosts = (data) =>
   request({ url: '/api/users/liked_posts', method: 'get', params: data });
 
@@ -29,6 +29,8 @@ export const getPosts = (data) =>
   request({ url: '/api/posts', method: 'get', params: data });
 export const getUserPosts = (userId, data) =>
   request({ url: `/api/posts/user/${userId}`, method: 'get', params: data });
+export const getPost = (postId, data) =>
+  request({ url: `/api/post/${postId}`, method: 'get', data });
 export const createPost = (data) =>
   request({ url: '/api/post', method: 'post', data });
 export const createPostComment = (postId, data) =>

@@ -41,6 +41,7 @@
             <span class="text-center font-bold">取消</span>
           </button>
           <button
+            @click="$router.push(`posts/${post._id}`)"
             type="button"
             class="flex flex-col items-center transition-all hover:scale-105"
           >
