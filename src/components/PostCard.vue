@@ -146,7 +146,7 @@
               <div class="flex items-center gap-x-2">
                 <input
                   v-model="tempComment.comment"
-                  @keyup.esc="() => (isEditComment = false)"
+                  @keyup.esc="clearTempComment"
                   @keyup.enter="confirmEditComment"
                   class="form-input rounded-lg bg-stone-200 py-1.5 ring-0 focus:ring-0"
                 />
@@ -247,7 +247,6 @@ const props = defineProps({
 const emit = defineEmits(['fetchData']);
 
 const store = useStore();
-const isEditComment = ref(false);
 const isOpenModal = ref(false);
 const tempComment = reactive({
   id: null,
@@ -276,7 +275,6 @@ const handleAddComment = async (id) => {
 const handleEditComment = (comment, close) => {
   tempComment.comment = comment.comment;
   tempComment.id = comment.id;
-  isEditComment.value = true;
   close();
 };
 const handleDeleteComment = async (id, close) => {
@@ -297,6 +295,10 @@ const editLike = async (postId, isLike) => {
     emit('fetchData');
   }
 };
+const clearTempComment = () => {
+  tempComment.comment = null;
+  tempComment.id = null;
+};
 const confirmEditComment = async () => {
   const payload = {
     comment: tempComment.comment,
@@ -304,9 +306,7 @@ const confirmEditComment = async () => {
   const res = await editPostComment(tempComment.id, payload);
   if (res.status === 'success') {
     emit('fetchData');
-    tempComment.comment = null;
-    tempComment.id = null;
-    isEditComment.value = false;
+    clearTempComment();
   }
 };
 const openModal = (post, close) => {
