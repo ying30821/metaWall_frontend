@@ -22,7 +22,11 @@
           </p>
         </div>
       </div>
-      <Popover v-slot="{ open }" class="relative">
+      <Popover
+        v-if="post.user.id === userData.id"
+        v-slot="{ open }"
+        class="relative"
+      >
         <PopoverButton
           class="p-1 text-base text-gray-800 hover:text-gray-500 focus:outline-none"
         >
@@ -42,12 +46,14 @@
             >
               <ul class="space-y-2 bg-light px-2 py-4">
                 <li
+                  @click="openModal(post)"
                   class="flex items-center gap-x-1.5 rounded-md p-1 hover:cursor-pointer hover:bg-gray-50"
                 >
                   <span class="material-symbols-outlined text-xl"> edit </span>
                   編輯貼文
                 </li>
                 <li
+                  @click="handleDeletePost(post.id)"
                   class="flex items-center gap-x-1.5 rounded-md p-1 hover:cursor-pointer hover:bg-gray-50"
                 >
                   <span class="material-symbols-outlined text-xl">
@@ -102,7 +108,7 @@
         <button
           type="button"
           :disabled="!post.currentComment"
-          @click="addComment(post.id)"
+          @click="handleAddComment(post.id)"
           class="btn-primary flex-none items-center rounded-none px-12 py-2"
         >
           留言
@@ -116,9 +122,17 @@
         class="flex items-start justify-between rounded-xl bg-light/30 p-4"
       >
         <div class="flex gap-x-4">
-          <Avatar :image="comment.user.photo" :userName="comment.user.name" />
+          <Avatar
+            :image="comment.user.photo"
+            :userName="comment.user.name"
+            @click="$router.push(`/feed/${comment.user.id}`)"
+            class="hover:cursor-pointer hover:ring-2 hover:ring-primary/40"
+          />
           <div>
-            <h3 class="text-base font-bold">
+            <h3
+              @click="$router.push(`/feed/${comment.user.id}`)"
+              class="text-base font-bold hover:cursor-pointer hover:text-primary hover:underline"
+            >
               {{ comment.user.name }}
             </h3>
             <p class="mb-1 text-xs text-[#9B9893]">
@@ -168,7 +182,7 @@
               >
                 <ul class="space-y-0.5 bg-light px-2 py-1.5">
                   <li
-                    @click="editComment(comment)"
+                    @click="handleEditComment(comment)"
                     class="flex items-center gap-x-1.5 rounded-md p-0.5 text-sm hover:cursor-pointer hover:bg-gray-50"
                   >
                     <span class="material-symbols-outlined text-lg">
@@ -177,7 +191,7 @@
                     編輯
                   </li>
                   <li
-                    @click="deleteComment(comment.id)"
+                    @click="handleDeleteComment(comment.id)"
                     class="flex items-center gap-x-1.5 rounded-md p-0.5 text-sm hover:cursor-pointer hover:bg-gray-50"
                   >
                     <span class="material-symbols-outlined text-lg">
@@ -193,6 +207,13 @@
       </div>
     </div>
   </div>
+  <PostModal
+    v-if="isOpenModal"
+    v-model:isOpen="isOpenModal"
+    :isOpen="isOpenModal"
+    :post="currentPost"
+    @fetchData="emit('fetchData')"
+  />
 </template>
 
 <script setup>
@@ -205,11 +226,13 @@ import {
   deletePostComment,
   addPostLike,
   deletePostLike,
+  deletePost,
 } from '@/api';
 import { convertDate, toCurrency } from '@/utils';
 import { notifySuccess, notifyError } from '@/utils/notify';
 import postDefaultImg from '@/assets/images/error_image.png';
 import Avatar from '@/components/Avatar.vue';
+import PostModal from '@/components/PostModal.vue';
 
 const props = defineProps({
   post: Object,
@@ -218,17 +241,19 @@ const emit = defineEmits(['fetchData']);
 
 const store = useStore();
 const isEditComment = ref(false);
+const isOpenModal = ref(false);
 const tempComment = reactive({
   id: null,
   comment: null,
 });
+const currentPost = reactive({});
 
 const userData = computed(() => store.state.userInfo);
 
 const handleErrorImg = (e) => {
   e.target.src = postDefaultImg;
 };
-const addComment = async (id) => {
+const handleAddComment = async (id) => {
   const payload = {
     comment: props.post.currentComment,
   };
@@ -241,7 +266,12 @@ const addComment = async (id) => {
   }
   notifyError('新增失敗', '新增留言失敗！');
 };
-const deleteComment = async (id) => {
+const handleEditComment = (comment) => {
+  tempComment.comment = comment.comment;
+  tempComment.id = comment.id;
+  isEditComment.value = true;
+};
+const handleDeleteComment = async (id) => {
   const res = await deletePostComment(id);
   if (res.status === 'success') {
     notifySuccess('刪除成功', '刪除留言成功！');
@@ -257,11 +287,6 @@ const editLike = async (postId, isLike) => {
     emit('fetchData');
   }
 };
-const editComment = (comment) => {
-  tempComment.comment = comment.comment;
-  tempComment.id = comment.id;
-  isEditComment.value = true;
-};
 const confirmEditComment = async () => {
   const payload = {
     comment: tempComment.comment,
@@ -273,6 +298,19 @@ const confirmEditComment = async () => {
     tempComment.id = null;
     isEditComment.value = false;
   }
+};
+const openModal = (post) => {
+  isOpenModal.value = true;
+  Object.assign(currentPost, post);
+};
+const handleDeletePost = async (id) => {
+  const res = await deletePost(id);
+  if (res.status === 'success') {
+    notifySuccess('刪除成功', '刪除貼文成功！');
+    emit('fetchData');
+    return;
+  }
+  notifyError('刪除失敗', '刪除貼文失敗！');
 };
 </script>
 

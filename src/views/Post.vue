@@ -2,7 +2,7 @@
   <Loading :isLoading="isLoadingPage" />
   <section>
     <PostCard
-      v-if="Object.keys(post).length > 0"
+      v-if="Object.keys(post).length > 0 && userData"
       :post="post"
       @fetchData="fetchPost"
     />

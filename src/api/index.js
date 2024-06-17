@@ -33,6 +33,10 @@ export const getPost = (postId, data) =>
   request({ url: `/api/post/${postId}`, method: 'get', data });
 export const createPost = (data) =>
   request({ url: '/api/post', method: 'post', data });
+export const editPost = (postId, data) =>
+  request({ url: `/api/post/${postId}`, method: 'patch', data });
+export const deletePost = (postId, data) =>
+  request({ url: `/api/post/${postId}`, method: 'delete', data });
 export const createPostComment = (postId, data) =>
   request({
     url: `/api/post/${postId}/comment`,
