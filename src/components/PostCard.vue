@@ -103,8 +103,8 @@
       <Avatar :image="userData.photo" :userName="userData.name" />
       <div class="flex w-full">
         <input
-          v-model="post.currentComment"
-          @keyup.enter="post.currentComment && handleAddComment(post.id)"
+          v-model.trim="post.currentComment"
+          @keyup.enter="handleAddComment(post.id)"
           type="text"
           class="flex-grow-1 block w-full border-2 border-r-0 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
           placeholder="留言..."
@@ -145,7 +145,7 @@
             <div v-if="tempComment.id === comment.id">
               <div class="flex items-center gap-x-2">
                 <input
-                  v-model="tempComment.comment"
+                  v-model.trim="tempComment.comment"
                   @keyup.esc="clearTempComment"
                   @keyup.enter="confirmEditComment"
                   class="form-input rounded-lg bg-stone-200 py-1.5 ring-0 focus:ring-0"
@@ -260,6 +260,7 @@ const handleErrorImg = (e) => {
   e.target.src = postDefaultImg;
 };
 const handleAddComment = async (id) => {
+  if (!props.post.currentComment) return;
   const payload = {
     comment: props.post.currentComment,
   };
@@ -300,6 +301,7 @@ const clearTempComment = () => {
   tempComment.id = null;
 };
 const confirmEditComment = async () => {
+  if (!tempComment.comment) return;
   const payload = {
     comment: tempComment.comment,
   };
