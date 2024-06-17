@@ -40,20 +40,23 @@
           leave-from-class="translate-y-0 opacity-100"
           leave-to-class="translate-y-1 opacity-0"
         >
-          <PopoverPanel class="absolute right-0 z-10 mt-1 w-40">
+          <PopoverPanel
+            v-slot="{ close }"
+            class="absolute right-0 z-10 mt-1 w-40"
+          >
             <div
               class="card-shadow overflow-hidden rounded-lg border-2 border-dark shadow-lg"
             >
               <ul class="space-y-2 bg-light px-2 py-4">
                 <li
-                  @click="openModal(post)"
+                  @click="openModal(post, close)"
                   class="flex items-center gap-x-1.5 rounded-md p-1 hover:cursor-pointer hover:bg-gray-50"
                 >
                   <span class="material-symbols-outlined text-xl"> edit </span>
                   編輯貼文
                 </li>
                 <li
-                  @click="handleDeletePost(post.id)"
+                  @click="handleDeletePost(post.id, close)"
                   class="flex items-center gap-x-1.5 rounded-md p-1 hover:cursor-pointer hover:bg-gray-50"
                 >
                   <span class="material-symbols-outlined text-xl">
@@ -101,6 +104,7 @@
       <div class="flex w-full">
         <input
           v-model="post.currentComment"
+          @keyup.enter="post.currentComment && handleAddComment(post.id)"
           type="text"
           class="flex-grow-1 block w-full border-2 border-r-0 border-black px-4 py-1.5 placeholder:text-gray-500 focus-visible:outline-0 focus-visible:ring-1 focus-visible:ring-blue-500"
           placeholder="留言..."
@@ -138,7 +142,7 @@
             <p class="mb-1 text-xs text-[#9B9893]">
               {{ convertDate(comment.createdAt) }}
             </p>
-            <div v-if="isEditComment">
+            <div v-if="tempComment.id === comment.id">
               <div class="flex items-center gap-x-2">
                 <input
                   v-model="tempComment.comment"
@@ -176,13 +180,16 @@
             leave-from-class="translate-y-0 opacity-100"
             leave-to-class="translate-y-1 opacity-0"
           >
-            <PopoverPanel class="absolute right-0 z-10 mt-1 w-24">
+            <PopoverPanel
+              v-slot="{ close }"
+              class="absolute right-0 z-10 mt-1 w-24"
+            >
               <div
                 class="card-shadow overflow-hidden rounded-lg border-2 border-dark shadow-lg"
               >
                 <ul class="space-y-0.5 bg-light px-2 py-1.5">
                   <li
-                    @click="handleEditComment(comment)"
+                    @click="handleEditComment(comment, close)"
                     class="flex items-center gap-x-1.5 rounded-md p-0.5 text-sm hover:cursor-pointer hover:bg-gray-50"
                   >
                     <span class="material-symbols-outlined text-lg">
@@ -191,7 +198,7 @@
                     編輯
                   </li>
                   <li
-                    @click="handleDeleteComment(comment.id)"
+                    @click="handleDeleteComment(comment.id, close)"
                     class="flex items-center gap-x-1.5 rounded-md p-0.5 text-sm hover:cursor-pointer hover:bg-gray-50"
                   >
                     <span class="material-symbols-outlined text-lg">
@@ -266,19 +273,22 @@ const handleAddComment = async (id) => {
   }
   notifyError('新增失敗', '新增留言失敗！');
 };
-const handleEditComment = (comment) => {
+const handleEditComment = (comment, close) => {
   tempComment.comment = comment.comment;
   tempComment.id = comment.id;
   isEditComment.value = true;
+  close();
 };
-const handleDeleteComment = async (id) => {
+const handleDeleteComment = async (id, close) => {
   const res = await deletePostComment(id);
   if (res.status === 'success') {
     notifySuccess('刪除成功', '刪除留言成功！');
+    close();
     emit('fetchData');
     return;
   }
   notifyError('刪除失敗', '刪除留言失敗！');
+  close();
 };
 const editLike = async (postId, isLike) => {
   const currentFunc = isLike ? deletePostLike : addPostLike;
@@ -299,18 +309,21 @@ const confirmEditComment = async () => {
     isEditComment.value = false;
   }
 };
-const openModal = (post) => {
+const openModal = (post, close) => {
   isOpenModal.value = true;
   Object.assign(currentPost, post);
+  close();
 };
-const handleDeletePost = async (id) => {
+const handleDeletePost = async (id, close) => {
   const res = await deletePost(id);
   if (res.status === 'success') {
     notifySuccess('刪除成功', '刪除貼文成功！');
     emit('fetchData');
+    close();
     return;
   }
   notifyError('刪除失敗', '刪除貼文失敗！');
+  close();
 };
 </script>
 
