@@ -45,7 +45,7 @@
       type="submit"
       class="btn-primary w-full shadow-[-2px_2px_0_-0_rgba(0,0,0)]"
     >
-      註冊
+      確認
     </button>
   </form>
 </template>
