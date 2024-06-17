@@ -46,3 +46,8 @@ export const toCurrency = (num) => {
 };
 
 export const passwordRegex = /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+export const timeSortOptions = [
+  { key: 'desc', value: '最新貼文' },
+  { key: 'asc', value: '最舊貼文' },
+];
